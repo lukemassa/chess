@@ -1,6 +1,7 @@
 package game
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -35,19 +36,19 @@ func (l Location) String() string {
 // NewLocation get a new location
 func NewLocation(locationString string) Location {
 
-	var fileAsRune rune
-	var rankAsRune rune
-	for i, c := range locationString {
-		if i == 0 {
-			fileAsRune = c
-		} else if i == 1 {
-			rankAsRune = c
-		} else {
-			panic(fmt.Sprintf("Invalid location: %s", locationString))
-		}
+	r := []rune(locationString)
+	// hm maybe not panic? Not sure what's best here
+	if len(r) != 2 {
+		panic(fmt.Sprintf("Invalid location: %s: Invalid number of characters", locationString))
 	}
-	fileAsInt := int8(fileAsRune) - 'A'
-	rankAsInt := int8(rankAsRune) - '1'
+	if r[0] < 'A' || r[0] > 'H' {
+		panic(fmt.Sprintf("Invalid location: %s: First character is not between A and H", locationString))
+	}
+	if r[1] < '1' || r[1] > '8' {
+		panic(fmt.Sprintf("Invalid location: %s: Second character is not betweeen 1 and 8", locationString))
+	}
+	fileAsInt := int8(r[0]) - 'A'
+	rankAsInt := int8(r[1]) - '1'
 	return Location{
 		file: fileAsInt,
 		rank: rankAsInt,
@@ -62,6 +63,7 @@ func (b *Board) IsValidMove(move Move) bool {
 // MakeMove make a specific move
 // returns true if this move won the game
 func (b *Board) MakeMove(move *Move) bool {
+	b.FailOnInvalidMove(move)
 	b.FailOnInvalidBoard()
 	// If there's a piece there, remove it
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
@@ -76,21 +78,31 @@ func (b *Board) MakeMove(move *Move) bool {
 			}
 		}
 	}
-	fmt.Printf("%s", b)
+	fmt.Printf("%v", move.Piece.Location)
 	// Remove the pointer from the old place, add the pointer at the new place
 	b.Squares[move.Piece.Location.file][move.Piece.Location.rank] = nil
-
-	fmt.Printf("Now its null %v\n", move.Piece.Location)
-	fmt.Printf("%s", b)
 	b.Squares[move.Destination.file][move.Destination.rank] = move.Piece
 
 	// Update this piece's location
 	move.Piece.Location = move.Destination
 
+	// If validation is set on, make sure we left ourselves with a valid board
 	b.FailOnInvalidBoard()
 
 	// TODO: Implement check for end of game
 	return false
+}
+
+// ValidateMove see if this is a valid move
+func (b *Board) ValidateMove(move *Move) error {
+	// TODO: Should this code go into IsValidMove?
+	if move.Piece == nil {
+		return errors.New("Null piece in move")
+	}
+	if !move.Piece.IsValidMove(move.Destination, b) {
+		return errors.New("Is not a legal move")
+	}
+	return nil
 }
 
 // Validate check to make sure we are looking at a legal board
@@ -147,6 +159,17 @@ func (b *Board) FailOnInvalidBoard() {
 	}
 }
 
+// FailOnInvalidMove quit if the move is invalid
+func (b *Board) FailOnInvalidMove(move *Move) {
+	if !b.validate {
+		return
+	}
+	err := b.ValidateMove(move)
+	if err != nil {
+		log.Fatalf("Move is in invalid: %s", err)
+	}
+}
+
 // AddPiece add a piece onto the board
 func (b *Board) AddPiece(piece *Piece) {
 
@@ -196,6 +219,7 @@ func (s Squares) String() string {
 
 // Print print the current board setup
 func (b *Board) String() string {
+	//	b.FailOnInvalidBoard()
 	return fmt.Sprintf("%s", b.Squares)
 }
 
