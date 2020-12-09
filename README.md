@@ -4,9 +4,9 @@ Implementation of the game of chess. Just for fun/practice go.
 Should know the rules, eventually will use to write a simple chess engine.
 
 
-# TODO
+## TODO
 
-## Game rules
+### Game rules
 - Check
 - End of game/Checkmate
 - Castling
@@ -17,16 +17,14 @@ Should know the rules, eventually will use to write a simple chess engine.
 - En Passant
 
 
-## Gameplay
+### Gameplay
 - Translate algebraic notation to Move
 - Be able to list valid moves for a given piece
 - Allow player to resign
 - Track "score" (how many pieces captured)
 
-## Engine
+### Engine
 - First pass: list all moves, pick a random one
 - Second pass: Determine score after moves, pick one with largest advantage
 - Minimax?
 - Parallelize minimax?
-
-
