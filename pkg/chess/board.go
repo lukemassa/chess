@@ -20,9 +20,9 @@ type boardMap [][]*Piece
 // Location on the board
 type Location struct {
 	// A-F
-	file uint8
+	file int8
 	// 1-8
-	rank uint8
+	rank int8
 }
 
 func (l Location) String() string {
@@ -43,8 +43,8 @@ func NewLocation(locationString string) Location {
 			panic(fmt.Sprintf("Invalid location: %s", locationString))
 		}
 	}
-	fileAsInt := uint8(fileAsRune) - 'A'
-	rankAsInt := uint8(rankAsRune) - '1'
+	fileAsInt := int8(fileAsRune) - 'A'
+	rankAsInt := int8(rankAsRune) - '1'
 	return Location{
 		file: fileAsInt,
 		rank: rankAsInt,

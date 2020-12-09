@@ -1,6 +1,6 @@
 package chess
 
-// Boring class that just lists the name and symbol of all the pieces
+// Boring file that just lists the name and symbol of all the pieces
 
 // Symbol rune for this piece
 func (p Piece) Symbol() rune {

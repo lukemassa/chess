@@ -18,8 +18,8 @@ func TestNewLocation(t *testing.T) {
 
 	testCases := []struct {
 		locationString string
-		expectedFile   uint8
-		expectedRank   uint8
+		expectedFile   int8
+		expectedRank   int8
 	}{
 		{
 			"A1",
