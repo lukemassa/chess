@@ -7,22 +7,22 @@ import (
 
 func TestMoveBoard(t *testing.T) {
 	testCases := []struct {
-		currentLocationString  string
-		newLocationString      string
-		opponentLocationString string
-		expectedNumberOfPieces int
+		currentLocationString   string
+		newLocationString       string
+		opponentLocationString  string
+		expectedOpponentRemains bool
 	}{
 		{
 			"E4",
 			"A4",
 			"A4",
-			1,
+			false,
 		},
 		{
 			"E4",
 			"A4",
 			"H4",
-			2,
+			true,
 		},
 	}
 
@@ -35,13 +35,14 @@ func TestMoveBoard(t *testing.T) {
 				Color:     White,
 				Location:  NewLocation(tc.currentLocationString),
 			}
+			opponentOriginalLocation := NewLocation(tc.opponentLocationString)
 			opponentPiece := Piece{
 				PieceType: Queen{},
 				Color:     Black,
-				Location:  NewLocation(tc.opponentLocationString),
+				Location:  opponentOriginalLocation,
 			}
-			board.AddPiece(piece)
-			board.AddPiece(opponentPiece)
+			board.AddPiece(&piece)
+			board.AddPiece(&opponentPiece)
 			err := board.Validate()
 			if err != nil {
 				t.Errorf("Found error when validating board before move: %v", err)
@@ -51,12 +52,26 @@ func TestMoveBoard(t *testing.T) {
 				Destination: NewLocation(tc.newLocationString),
 			}
 			board.MakeMove(&move)
-			if len(board.Pieces) != tc.expectedNumberOfPieces {
-				t.Errorf("Expected %d pieces after the move, found %d", tc.expectedNumberOfPieces, len(board.Pieces))
-			}
+
 			err = board.Validate()
 			if err != nil {
 				t.Errorf("Found error when validating board after move: %v", err)
+			}
+			if tc.expectedOpponentRemains {
+				if *board.Squares[opponentOriginalLocation.file][opponentOriginalLocation.rank] != opponentPiece {
+					t.Errorf("Expected opponent piece to remain on %s", opponentOriginalLocation)
+				}
+				if len(board.Pieces) != 2 {
+					t.Errorf("Expected both opponent and piece to remain on the board")
+				}
+			}
+			if !tc.expectedOpponentRemains {
+				if *board.Squares[opponentOriginalLocation.file][opponentOriginalLocation.rank] != piece {
+					t.Errorf("Expected piece to now be where opponent was on %s", opponentOriginalLocation)
+				}
+				if len(board.Pieces) != 1 {
+					t.Errorf("Expected both opponent and piece to remain on the board")
+				}
 			}
 		})
 	}

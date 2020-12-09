@@ -223,7 +223,7 @@ func TestPawnCapturingMovement(t *testing.T) {
 				Color:     Black,
 				Location:  NewLocation(tc.opponentLocationString),
 			}
-			board.AddPiece(opponentPiece)
+			board.AddPiece(&opponentPiece)
 
 			piece := Piece{
 				PieceType: Pawn{},

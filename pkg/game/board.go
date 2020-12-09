@@ -10,7 +10,7 @@ const BoardSize = 8
 
 // Board an abstraction for the current setup of the board
 type Board struct {
-	Pieces []Piece
+	Pieces []*Piece
 	Squares
 }
 
@@ -65,7 +65,7 @@ func (b *Board) MakeMove(move *Move) bool {
 	if currentPiece != nil {
 		b.Squares[move.Destination.file][move.Destination.rank] = nil
 		for i := 0; i < len(b.Pieces); i++ {
-			if b.Pieces[i] == *currentPiece {
+			if *b.Pieces[i] == *currentPiece {
 				// Remove this piece
 				b.Pieces[i] = b.Pieces[len(b.Pieces)-1]
 				b.Pieces = b.Pieces[:len(b.Pieces)-1]
@@ -73,12 +73,12 @@ func (b *Board) MakeMove(move *Move) bool {
 			}
 		}
 	}
-	//b.Print()
+	fmt.Printf("%s", b)
 	// Remove the pointer from the old place, add the pointer at the new place
 	b.Squares[move.Piece.Location.file][move.Piece.Location.rank] = nil
 
 	fmt.Printf("Now its null %v\n", move.Piece.Location)
-	//b.Print()
+	fmt.Printf("%s", b)
 	b.Squares[move.Destination.file][move.Destination.rank] = move.Piece
 
 	// Update this piece's location
@@ -102,32 +102,37 @@ func (b *Board) Validate() error {
 			return fmt.Errorf("Piece not marked in square at %s", l)
 		}
 	}
+	foundPieces := 0
 	for i := 0; i < BoardSize; i++ {
 		for j := 0; j < BoardSize; j++ {
 			piece := b.Squares[i][j]
 			if piece == nil {
 				continue
 			}
+			foundPieces++
 			fmt.Printf("Found non-nil: %s\n", piece)
 			foundPiece := false
 			for k := 0; k < len(b.Pieces); k++ {
-				if b.Pieces[k] == *piece {
+				if *b.Pieces[k] == *piece {
 					foundPiece = true
 					break
 				}
 			}
 			if !foundPiece {
-				return fmt.Errorf("Could not find piece from %s on board", piece.Location)
+				return fmt.Errorf("There is a piece at %s that is not in piece list", piece.Location)
 			}
 		}
+	}
+	if foundPieces != len(b.Pieces) {
+		return fmt.Errorf("Found %d in the board, but %d pieces in the set", foundPieces, len(b.Pieces))
 	}
 	return nil
 }
 
 // AddPiece add a piece onto the board
-func (b *Board) AddPiece(piece Piece) {
+func (b *Board) AddPiece(piece *Piece) {
 	b.Pieces = append(b.Pieces, piece)
-	b.Squares[piece.file][piece.rank] = &piece
+	b.Squares[piece.file][piece.rank] = piece
 }
 
 func getEmptySquares() Squares {
@@ -189,7 +194,7 @@ func NewBoard() *Board {
 
 	b := BlankBoard()
 
-	for _, piece := range []Piece{
+	pieces := []Piece{
 		{PieceType: Pawn{}, Color: White, Location: NewLocation("A2")},
 		{PieceType: Pawn{}, Color: White, Location: NewLocation("B2")},
 		{PieceType: Pawn{}, Color: White, Location: NewLocation("C2")},
@@ -225,8 +230,9 @@ func NewBoard() *Board {
 		{PieceType: Bishop{}, Color: Black, Location: NewLocation("F8")},
 		{PieceType: Knight{}, Color: Black, Location: NewLocation("G8")},
 		{PieceType: Rook{}, Color: Black, Location: NewLocation("H8")},
-	} {
-		b.AddPiece(piece)
+	}
+	for i := 0; i < len(pieces); i++ {
+		b.AddPiece(&pieces[i])
 	}
 
 	return b
