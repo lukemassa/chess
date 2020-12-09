@@ -3,15 +3,15 @@ package game
 // PieceType abstraction for a single piece
 type PieceType interface {
 	Name() string
-	SymbolMap() map[Player]rune
-	IsValidMove(currentLocation, newLocation Location, player Player) bool
-	CanCapture(currentLocation, opponentLocation Location, player Player) bool
+	SymbolMap() map[Color]rune
+	IsValidMove(currentLocation, newLocation Location, color Color) bool
+	CanCapture(currentLocation, opponentLocation Location, color Color) bool
 }
 
 // Piece an actual piece
 type Piece struct {
 	PieceType
-	Player
+	Color
 	Location
 }
 
@@ -20,16 +20,16 @@ func (p Piece) IsValidMove(newLocation Location, b *Board) bool {
 	targetPiece := b.Squares[newLocation.file][newLocation.rank]
 	// Target is empty
 	if targetPiece == nil {
-		return p.PieceType.IsValidMove(p.Location, newLocation, p.Player)
+		return p.PieceType.IsValidMove(p.Location, newLocation, p.Color)
 	}
 
 	// TODO: Make sure there are no pieces in the way
 
 	// One of our pieces is already there
-	if targetPiece.Player == p.Player {
+	if targetPiece.Color == p.Color {
 		return false
 	}
-	return p.PieceType.CanCapture(p.Location, newLocation, p.Player)
+	return p.PieceType.CanCapture(p.Location, newLocation, p.Color)
 }
 
 func abs(x int8) int8 {
@@ -73,7 +73,7 @@ type King struct {
 }
 
 // IsValidMove for a pawn
-func (p Pawn) IsValidMove(currentLocation, newLocation Location, player Player) bool {
+func (p Pawn) IsValidMove(currentLocation, newLocation Location, color Color) bool {
 	// Has to go in a straight line
 	if currentLocation.file != newLocation.file {
 		return false
@@ -81,7 +81,7 @@ func (p Pawn) IsValidMove(currentLocation, newLocation Location, player Player) 
 	// Switch to "white's" perspective
 	currentRank := currentLocation.rank
 	newRank := newLocation.rank
-	if player == Black {
+	if color == Black {
 		currentRank = (BoardSize - 1) - currentRank
 		newRank = (BoardSize - 1) - newRank
 	}
@@ -102,12 +102,12 @@ func (p Pawn) IsValidMove(currentLocation, newLocation Location, player Player) 
 }
 
 // IsValidMove for a rook
-func (r Rook) IsValidMove(currentLocation, newLocation Location, player Player) bool {
+func (r Rook) IsValidMove(currentLocation, newLocation Location, color Color) bool {
 	return onSameRankOrFile(currentLocation, newLocation)
 }
 
 // IsValidMove for a knight
-func (k Knight) IsValidMove(currentLocation, newLocation Location, player Player) bool {
+func (k Knight) IsValidMove(currentLocation, newLocation Location, color Color) bool {
 	rankDiff := abs(currentLocation.rank - newLocation.rank)
 	fileDiff := abs(currentLocation.file - newLocation.file)
 	if (rankDiff == 2 && fileDiff == 1) || (rankDiff == 1 && fileDiff == 2) {
@@ -117,17 +117,17 @@ func (k Knight) IsValidMove(currentLocation, newLocation Location, player Player
 }
 
 // IsValidMove for a bishop
-func (b Bishop) IsValidMove(currentLocation, newLocation Location, player Player) bool {
+func (b Bishop) IsValidMove(currentLocation, newLocation Location, color Color) bool {
 	return onSameDiagonal(currentLocation, newLocation)
 }
 
 // IsValidMove for a queen
-func (q Queen) IsValidMove(currentLocation, newLocation Location, player Player) bool {
+func (q Queen) IsValidMove(currentLocation, newLocation Location, color Color) bool {
 	return onSameRankOrFile(currentLocation, newLocation) || onSameDiagonal(currentLocation, newLocation)
 }
 
 // IsValidMove for a king
-func (k King) IsValidMove(currentLocation, newLocation Location, player Player) bool {
+func (k King) IsValidMove(currentLocation, newLocation Location, color Color) bool {
 	rankDiff := abs(currentLocation.rank - newLocation.rank)
 	fileDiff := abs(currentLocation.file - newLocation.file)
 	if rankDiff <= 1 && fileDiff <= 1 {
@@ -137,7 +137,7 @@ func (k King) IsValidMove(currentLocation, newLocation Location, player Player) 
 }
 
 // CanCapture from a pawn's perspective
-func (p Pawn) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+func (p Pawn) CanCapture(currentLocation, opponentLocation Location, color Color) bool {
 	fileDiff := abs(currentLocation.file - opponentLocation.file)
 
 	// Must be one file to the left or right
@@ -148,7 +148,7 @@ func (p Pawn) CanCapture(currentLocation, opponentLocation Location, player Play
 	// Switch to "white's" perspective
 	currentRank := currentLocation.rank
 	opponentRank := opponentLocation.rank
-	if player == Black {
+	if color == Black {
 		currentRank = (BoardSize - 1) - currentRank
 		opponentRank = (BoardSize - 1) - opponentRank
 	}
@@ -160,26 +160,26 @@ func (p Pawn) CanCapture(currentLocation, opponentLocation Location, player Play
 }
 
 // CanCapture from a rook's perspective
-func (r Rook) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
-	return r.IsValidMove(currentLocation, opponentLocation, player)
+func (r Rook) CanCapture(currentLocation, opponentLocation Location, color Color) bool {
+	return r.IsValidMove(currentLocation, opponentLocation, color)
 }
 
 // CanCapture from a knight's perspective
-func (k Knight) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
-	return k.IsValidMove(currentLocation, opponentLocation, player)
+func (k Knight) CanCapture(currentLocation, opponentLocation Location, color Color) bool {
+	return k.IsValidMove(currentLocation, opponentLocation, color)
 }
 
 // CanCapture from a bishop's perspective
-func (b Bishop) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
-	return b.IsValidMove(currentLocation, opponentLocation, player)
+func (b Bishop) CanCapture(currentLocation, opponentLocation Location, color Color) bool {
+	return b.IsValidMove(currentLocation, opponentLocation, color)
 }
 
 // CanCapture from a queen's perspective
-func (q Queen) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
-	return q.IsValidMove(currentLocation, opponentLocation, player)
+func (q Queen) CanCapture(currentLocation, opponentLocation Location, color Color) bool {
+	return q.IsValidMove(currentLocation, opponentLocation, color)
 }
 
 // CanCapture from a king's perspective
-func (k King) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
-	return k.IsValidMove(currentLocation, opponentLocation, player)
+func (k King) CanCapture(currentLocation, opponentLocation Location, color Color) bool {
+	return k.IsValidMove(currentLocation, opponentLocation, color)
 }

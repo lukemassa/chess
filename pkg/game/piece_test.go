@@ -9,7 +9,7 @@ func TestBasicPieceMovements(t *testing.T) {
 
 	testCases := []struct {
 		pieceType             PieceType
-		player                Player
+		color                 Color
 		currentLocationString string
 		newLocationString     string
 		expectedIsValidMove   bool
@@ -155,11 +155,11 @@ func TestBasicPieceMovements(t *testing.T) {
 		if !tc.expectedIsValidMove {
 			prefix = "Can't move"
 		}
-		testName := fmt.Sprintf("%s %s %s from %s -> %s", prefix, tc.player, tc.pieceType.Name(), tc.currentLocationString, tc.newLocationString)
+		testName := fmt.Sprintf("%s %s %s from %s -> %s", prefix, tc.color, tc.pieceType.Name(), tc.currentLocationString, tc.newLocationString)
 		t.Run(testName, func(t *testing.T) {
 			piece := Piece{
 				PieceType: tc.pieceType,
-				Player:    tc.player,
+				Color:     tc.color,
 				Location:  NewLocation(tc.currentLocationString),
 			}
 			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)
@@ -220,14 +220,14 @@ func TestPawnCapturingMovement(t *testing.T) {
 			board := BlankBoard()
 			opponentPiece := Piece{
 				PieceType: Queen{},
-				Player:    Black,
+				Color:     Black,
 				Location:  NewLocation(tc.opponentLocationString),
 			}
 			board.AddPiece(opponentPiece)
 
 			piece := Piece{
 				PieceType: Pawn{},
-				Player:    White,
+				Color:     White,
 				Location:  NewLocation("E2"),
 			}
 			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)

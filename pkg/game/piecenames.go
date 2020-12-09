@@ -4,7 +4,7 @@ package game
 
 // Symbol rune for this piece
 func (p Piece) Symbol() rune {
-	return p.PieceType.SymbolMap()[p.Player]
+	return p.PieceType.SymbolMap()[p.Color]
 }
 
 // Name of pawn
@@ -13,8 +13,8 @@ func (p Pawn) Name() string {
 }
 
 // SymbolMap for pawn
-func (p Pawn) SymbolMap() map[Player]rune {
-	return map[Player]rune{
+func (p Pawn) SymbolMap() map[Color]rune {
+	return map[Color]rune{
 		Black: '♟',
 		White: '♙',
 	}
@@ -26,8 +26,8 @@ func (r Rook) Name() string {
 }
 
 // SymbolMap for rook
-func (r Rook) SymbolMap() map[Player]rune {
-	return map[Player]rune{
+func (r Rook) SymbolMap() map[Color]rune {
+	return map[Color]rune{
 		Black: '♜',
 		White: '♖',
 	}
@@ -39,8 +39,8 @@ func (k Knight) Name() string {
 }
 
 // SymbolMap for knight
-func (k Knight) SymbolMap() map[Player]rune {
-	return map[Player]rune{
+func (k Knight) SymbolMap() map[Color]rune {
+	return map[Color]rune{
 		Black: '♞',
 		White: '♘',
 	}
@@ -52,8 +52,8 @@ func (q Queen) Name() string {
 }
 
 // SymbolMap for knight
-func (q Queen) SymbolMap() map[Player]rune {
-	return map[Player]rune{
+func (q Queen) SymbolMap() map[Color]rune {
+	return map[Color]rune{
 		Black: '♛',
 		White: '♕',
 	}
@@ -65,8 +65,8 @@ func (k King) Name() string {
 }
 
 // SymbolMap for knight
-func (k King) SymbolMap() map[Player]rune {
-	return map[Player]rune{
+func (k King) SymbolMap() map[Color]rune {
+	return map[Color]rune{
 		Black: '♚',
 		White: '♔',
 	}
@@ -78,8 +78,8 @@ func (b Bishop) Name() string {
 }
 
 // SymbolMap for knight
-func (b Bishop) SymbolMap() map[Player]rune {
-	return map[Player]rune{
+func (b Bishop) SymbolMap() map[Color]rune {
+	return map[Color]rune{
 		Black: '♝',
 		White: '♗',
 	}

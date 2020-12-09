@@ -3,13 +3,13 @@ package game
 import "fmt"
 
 // Player players of the game
-type Player string
+type Color string
 
 const (
 	// Black player controlling the black pieces
-	Black Player = "black"
+	Black Color = "black"
 	// White player controlling the white pieces
-	White Player = "white"
+	White Color = "white"
 )
 
 // Game current game
@@ -25,7 +25,7 @@ func (g *Game) Print() {
 }
 
 // Turn whose turn is it
-func (g *Game) Turn() Player {
+func (g *Game) Turn() Color {
 	if g.whiteTurn {
 		return White
 	}
