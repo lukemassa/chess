@@ -2,7 +2,7 @@ package game
 
 import "fmt"
 
-// Player players of the game
+// Color players of the game
 type Color string
 
 const (
