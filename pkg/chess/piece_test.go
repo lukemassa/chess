@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestPieceMovements(t *testing.T) {
+func TestBasicPieceMovements(t *testing.T) {
 
 	testCases := []struct {
 		pieceType             PieceType
@@ -154,6 +154,61 @@ func TestPieceMovements(t *testing.T) {
 				PieceType: tc.pieceType,
 				Player:    tc.player,
 				Location:  NewLocation(tc.currentLocationString),
+			}
+			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)
+
+			if actualIsValidMove && !tc.expectedIsValidMove {
+				t.Errorf("Expected invalid move")
+			}
+			if !actualIsValidMove && tc.expectedIsValidMove {
+				t.Errorf("Expected valid move")
+			}
+
+		})
+	}
+}
+
+func TestPawnCapturingMovement(t *testing.T) {
+
+	// Check to make sure the pawn is moving around correctly
+	// Use a white pawn starting on E2
+	testCases := []struct {
+		newLocationString      string
+		opponentLocationString string
+		expectedIsValidMove    bool
+	}{
+		{
+			"E4",
+			"A8",
+			true,
+		},
+		{
+			"E4",
+			"E4",
+			false,
+		},
+	}
+
+	for _, tc := range testCases {
+
+		prefix := "Can move"
+		if !tc.expectedIsValidMove {
+			prefix = "Can't move"
+		}
+		testName := fmt.Sprintf("%s pawn to %s with opponent on %s", prefix, tc.newLocationString, tc.opponentLocationString)
+		t.Run(testName, func(t *testing.T) {
+			board := BlankBoard()
+			opponentPiece := Piece{
+				PieceType: Queen{},
+				Player:    Black,
+				Location:  NewLocation(tc.opponentLocationString),
+			}
+			board.AddPiece(opponentPiece)
+
+			piece := Piece{
+				PieceType: Pawn{},
+				Player:    White,
+				Location:  NewLocation("E2"),
 			}
 			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)
 

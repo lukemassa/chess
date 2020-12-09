@@ -17,8 +17,19 @@ type Piece struct {
 
 // IsValidMove can this piece be moved to new square
 func (p Piece) IsValidMove(newLocation Location, b *Board) bool {
-	// TODO: Is one of my pieces there/etc
-	return p.PieceType.IsValidMove(p.Location, newLocation, p.Player)
+	targetPiece := b.Squares[newLocation.file][newLocation.rank]
+	// Target is empty
+	if targetPiece == nil {
+		return p.PieceType.IsValidMove(p.Location, newLocation, p.Player)
+	}
+
+	// TODO: Make sure there are no pieces in the way
+
+	// One of our pieces is already there
+	if targetPiece.Player == p.Player {
+		return false
+	}
+	return p.PieceType.CanCapture(p.Location, newLocation, p.Player)
 }
 
 func abs(x int8) int8 {
