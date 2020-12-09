@@ -2,5 +2,16 @@ package game
 
 // Player player of chess
 type Player interface {
-	MakeMove(b *Board) Move
+	NextMove(b *Board) Move
+}
+
+// Play play the game
+func (g *Game) Play() {
+	for {
+		player := g.Turn()
+		g.whitesTurn = !g.whitesTurn
+		move := player.NextMove(g.Board)
+		g.Board.MakeMove(move)
+		break
+	}
 }

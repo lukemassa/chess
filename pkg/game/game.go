@@ -14,8 +14,10 @@ const (
 
 // Game current game
 type Game struct {
-	Board     *Board
-	whiteTurn bool
+	Board       *Board
+	whitesTurn  bool
+	WhitePlayer Player
+	BlackPlayer Player
 }
 
 // Print print the game
@@ -25,17 +27,17 @@ func (g *Game) Print() {
 }
 
 // Turn whose turn is it
-func (g *Game) Turn() Color {
-	if g.whiteTurn {
-		return White
+func (g *Game) Turn() Player {
+	if g.whitesTurn {
+		return g.WhitePlayer
 	}
-	return Black
+	return g.BlackPlayer
 }
 
 // New get a new game of chess
 func New() *Game {
 	return &Game{
-		Board:     NewBoard(),
-		whiteTurn: true,
+		Board:      NewBoard(),
+		whitesTurn: true,
 	}
 }
