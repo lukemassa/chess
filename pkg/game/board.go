@@ -3,6 +3,8 @@ package game
 import (
 	"fmt"
 	"strings"
+
+	"log"
 )
 
 // BoardSize number of squares along one edge of the board
@@ -60,6 +62,7 @@ func (b *Board) IsValidMove(move Move) bool {
 // MakeMove make a specific move
 // returns true if this move won the game
 func (b *Board) MakeMove(move *Move) bool {
+	b.FailOnInvalidBoard()
 	// If there's a piece there, remove it
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
 	if currentPiece != nil {
@@ -84,6 +87,8 @@ func (b *Board) MakeMove(move *Move) bool {
 	// Update this piece's location
 	move.Piece.Location = move.Destination
 
+	b.FailOnInvalidBoard()
+
 	// TODO: Implement check for end of game
 	return false
 }
@@ -99,7 +104,10 @@ func (b *Board) Validate() error {
 		}
 		foundLocations[l] = true
 
-		//
+		inSquare := b.Squares[l.file][l.rank]
+		if inSquare == nil {
+			return fmt.Errorf("Piece %s is nil in the square", b.Pieces[i])
+		}
 		if *b.Squares[l.file][l.rank] != *b.Pieces[i] {
 			return fmt.Errorf("Piece %s not reflected correctly in squares", b.Pieces[i])
 		}
@@ -128,10 +136,25 @@ func (b *Board) Validate() error {
 	return nil
 }
 
+// FailOnInvalidBoard quit if the board is now invalid
+func (b *Board) FailOnInvalidBoard() {
+	if !b.validate {
+		return
+	}
+	err := b.Validate()
+	if err != nil {
+		log.Fatalf("Board is in invalid state: %s", err)
+	}
+}
+
 // AddPiece add a piece onto the board
 func (b *Board) AddPiece(piece *Piece) {
+
+	// Board will be invalid between these two commands but not at the beginning or end
+	b.FailOnInvalidBoard()
 	b.Pieces = append(b.Pieces, piece)
 	b.Squares[piece.file][piece.rank] = piece
+	b.FailOnInvalidBoard()
 }
 
 func getEmptySquares() Squares {
@@ -173,20 +196,18 @@ func (s Squares) String() string {
 
 // Print print the current board setup
 func (b *Board) String() string {
-	//err := b.Validate()
-	//if err != nil {
-	//log.Fatal(err)
-	//}
 	return fmt.Sprintf("%s", b.Squares)
 }
 
 // BlankBoard an empty board
 func BlankBoard(validate bool) *Board {
 
-	return &Board{
+	b := Board{
 		Squares:  getEmptySquares(),
 		validate: validate,
 	}
+	b.FailOnInvalidBoard()
+	return &b
 }
 
 // NewBoard a new board setup for standard play
