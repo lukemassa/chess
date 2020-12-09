@@ -98,33 +98,32 @@ func (b *Board) Validate() error {
 			return fmt.Errorf("Found more than one piece at %s", l)
 		}
 		foundLocations[l] = true
-		if b.Squares[l.file][l.rank] == nil {
-			return fmt.Errorf("Piece not marked in square at %s", l)
+
+		//
+		if *b.Squares[l.file][l.rank] != *b.Pieces[i] {
+			return fmt.Errorf("Piece %s not reflected correctly in squares", b.Pieces[i])
 		}
 	}
-	foundPieces := 0
+
 	for i := 0; i < BoardSize; i++ {
 		for j := 0; j < BoardSize; j++ {
 			piece := b.Squares[i][j]
 			if piece == nil {
 				continue
 			}
-			foundPieces++
-			fmt.Printf("Found non-nil: %s\n", piece)
-			foundPiece := false
+			foundPieces := 0
 			for k := 0; k < len(b.Pieces); k++ {
 				if *b.Pieces[k] == *piece {
-					foundPiece = true
-					break
+					foundPieces++
 				}
 			}
-			if !foundPiece {
+			if foundPieces == 0 {
 				return fmt.Errorf("There is a piece at %s that is not in piece list", piece.Location)
 			}
+			if foundPieces > 1 {
+				return fmt.Errorf("Piece %s is referenced on more than one square", piece)
+			}
 		}
-	}
-	if foundPieces != len(b.Pieces) {
-		return fmt.Errorf("Found %d in the board, but %d pieces in the set", foundPieces, len(b.Pieces))
 	}
 	return nil
 }
