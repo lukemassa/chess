@@ -1,4 +1,4 @@
-package chess
+package game
 
 import "fmt"
 
@@ -32,8 +32,8 @@ func (g *Game) Turn() Player {
 	return Black
 }
 
-// NewGame get a new game of chess
-func NewGame() *Game {
+// New get a new game of chess
+func New() *Game {
 	return &Game{
 		Board:     NewBoard(),
 		whiteTurn: true,

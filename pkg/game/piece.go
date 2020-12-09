@@ -1,4 +1,4 @@
-package chess
+package game
 
 // PieceType abstraction for a single piece
 type PieceType interface {

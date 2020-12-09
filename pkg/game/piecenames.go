@@ -1,4 +1,4 @@
-package chess
+package game
 
 // Boring file that just lists the name and symbol of all the pieces
 
