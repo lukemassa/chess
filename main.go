@@ -7,5 +7,5 @@ import (
 
 func main() {
 	g := game.New(&players.InteractivePlayer{}, &players.InteractivePlayer{})
-	g.Play(true)
+	g.Play(false)
 }
