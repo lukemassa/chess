@@ -7,8 +7,7 @@ import (
 
 func TestMoveBoard(t *testing.T) {
 	testCases := []struct {
-		currentLocationString string
-
+		currentLocationString  string
 		newLocationString      string
 		opponentLocationString string
 		expectedNumberOfPieces int
