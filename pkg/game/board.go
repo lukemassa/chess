@@ -52,6 +52,41 @@ func NewLocation(locationString string) Location {
 	}
 }
 
+// IsValidMove can a given move be made
+func (b *Board) IsValidMove(move Move) bool {
+	return move.Piece.IsValidMove(move.Destination, b)
+}
+
+// RemovePiece from the board
+func (b *Board) RemovePiece(piece Piece) {
+
+}
+
+// MakeMove make a specific move
+func (b *Board) MakeMove(move Move) {
+
+	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
+	if currentPiece != nil {
+		for i := 0; i < len(b.Pieces); i++ {
+			if b.Pieces[i] == *currentPiece {
+				// Rmove this piece
+				b.Pieces[i] = b.Pieces[len(b.Pieces)-1]
+				b.Pieces = b.Pieces[:len(b.Pieces)-1]
+				break
+			}
+		}
+	}
+
+	b.Squares[move.Destination.file][move.Destination.rank] = &move.Piece
+	for i := 0; i < len(b.Pieces); i++ {
+		if b.Pieces[i] == move.Piece {
+			b.Pieces[i].Location = move.Destination
+			break
+		}
+	}
+
+}
+
 // Validate check to make sure we are looking at a legal board
 func (b *Board) Validate() error {
 	foundLocations := make(map[Location]bool)
