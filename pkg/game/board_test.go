@@ -52,7 +52,7 @@ func TestNewLocation(t *testing.T) {
 
 func TestNewBoard(t *testing.T) {
 
-	board := NewBoard()
+	board := NewBoard(true)
 	if board.Squares.String() != initialSquares {
 		t.Errorf("Expected initial board: %s, found %s", initialSquares, board.Squares)
 	}

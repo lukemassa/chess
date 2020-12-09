@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	g := game.New(&players.InteractivePlayer{}, &players.InteractivePlayer{})
-	g.Play(false)
+	g := game.New(&players.InteractivePlayer{}, &players.InteractivePlayer{}, true)
+	g.Play()
 }

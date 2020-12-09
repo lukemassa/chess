@@ -12,6 +12,7 @@ const BoardSize = 8
 type Board struct {
 	Pieces []*Piece
 	Squares
+	validate bool
 }
 
 // Squares a description of what squares are filled how
@@ -59,7 +60,6 @@ func (b *Board) IsValidMove(move Move) bool {
 // MakeMove make a specific move
 // returns true if this move won the game
 func (b *Board) MakeMove(move *Move) bool {
-
 	// If there's a piece there, remove it
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
 	if currentPiece != nil {
@@ -181,17 +181,18 @@ func (b *Board) String() string {
 }
 
 // BlankBoard an empty board
-func BlankBoard() *Board {
+func BlankBoard(validate bool) *Board {
 
 	return &Board{
-		Squares: getEmptySquares(),
+		Squares:  getEmptySquares(),
+		validate: validate,
 	}
 }
 
 // NewBoard a new board setup for standard play
-func NewBoard() *Board {
+func NewBoard(validate bool) *Board {
 
-	b := BlankBoard()
+	b := BlankBoard(validate)
 
 	pieces := []Piece{
 		{PieceType: Pawn{}, Color: White, Location: NewLocation("A2")},

@@ -149,7 +149,7 @@ func TestBasicPieceMovements(t *testing.T) {
 		},
 	}
 
-	board := BlankBoard()
+	board := BlankBoard(true)
 	for _, tc := range testCases {
 		prefix := "Can move"
 		if !tc.expectedIsValidMove {
@@ -217,7 +217,7 @@ func TestPawnCapturingMovement(t *testing.T) {
 		}
 		testName := fmt.Sprintf("%s pawn to %s with opponent on %s", prefix, tc.newLocationString, tc.opponentLocationString)
 		t.Run(testName, func(t *testing.T) {
-			board := BlankBoard()
+			board := BlankBoard(false) // Doing
 			opponentPiece := Piece{
 				PieceType: Queen{},
 				Color:     Black,

@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"log"
 )
 
 // Player player of chess
@@ -45,22 +44,15 @@ func (g Game) Turn() (Player, Color) {
 
 // Play the game, return the color who won
 // TODO: Handle draw
-func (g *Game) Play(validate bool) Color {
+func (g *Game) Play() Color {
 	var winner Color
 	for {
 		player, color := g.Turn()
 
 		move := player.NextMove(g.Board, color)
 		// Did this move succeed in ending the game?
-		winningMove := g.Board.MakeMove(move)
 
-		if validate {
-			err := g.Board.Validate()
-			if err != nil {
-				log.Fatalf("Error validating %v", err)
-			}
-		}
-		if winningMove {
+		if g.Board.MakeMove(move) {
 			winner = color
 			break
 		}
@@ -85,9 +77,9 @@ func (g Game) Winner() Color {
 }
 
 // New get a new game of chess
-func New(whitePlayer, blackPlayer Player) *Game {
+func New(whitePlayer, blackPlayer Player, validate bool) *Game {
 	return &Game{
-		Board:       NewBoard(),
+		Board:       NewBoard(validate),
 		whitesTurn:  true,
 		WhitePlayer: whitePlayer,
 		BlackPlayer: blackPlayer,

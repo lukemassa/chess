@@ -29,7 +29,7 @@ func TestMoveBoard(t *testing.T) {
 	for _, tc := range testCases {
 
 		t.Run(fmt.Sprintf("Moving from %s to %s with an opponent piece at %s", tc.currentLocationString, tc.newLocationString, tc.opponentLocationString), func(t *testing.T) {
-			board := BlankBoard()
+			board := BlankBoard(false) // Doing our own validation checks
 			piece := Piece{
 				PieceType: Rook{},
 				Color:     White,
