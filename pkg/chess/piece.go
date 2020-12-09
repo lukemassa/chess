@@ -129,7 +129,7 @@ func (q Queen) IsValidMove(currentLocation, newLocation Location, player Player)
 // IsValidMove for a king
 func (k King) IsValidMove(currentLocation, newLocation Location, player Player) bool {
 	rankDiff := abs(currentLocation.rank - newLocation.rank)
-	fileDiff := abs(currentLocation.file - currentLocation.file)
+	fileDiff := abs(currentLocation.file - newLocation.file)
 	if rankDiff <= 1 && fileDiff <= 1 {
 		return true
 	}
@@ -138,7 +138,25 @@ func (k King) IsValidMove(currentLocation, newLocation Location, player Player) 
 
 // CanCapture from a pawn's perspective
 func (p Pawn) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
-	return false
+	fileDiff := abs(currentLocation.file - opponentLocation.file)
+
+	// Must be one file to the left or right
+	if fileDiff != 1 {
+		return false
+	}
+
+	// Switch to "white's" perspective
+	currentRank := currentLocation.rank
+	opponentRank := opponentLocation.rank
+	if player == Black {
+		currentRank = (BoardSize - 1) - currentRank
+		opponentRank = (BoardSize - 1) - opponentRank
+	}
+	// Must be the very next rank
+	if currentRank+1 != opponentRank {
+		return false
+	}
+	return true
 }
 
 // CanCapture from a rook's perspective

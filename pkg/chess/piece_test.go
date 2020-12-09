@@ -182,10 +182,23 @@ func TestPawnCapturingMovement(t *testing.T) {
 			"A8",
 			true,
 		},
+		// Cannot capture forward with a pawn
 		{
 			"E4",
 			"E4",
 			false,
+		},
+		// Cannot move diagonally unless capturing
+		{
+			"D3",
+			"E4",
+			false,
+		},
+		// Can capture diagonally
+		{
+			"D3",
+			"D3",
+			true,
 		},
 	}
 
