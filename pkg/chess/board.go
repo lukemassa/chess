@@ -3,6 +3,7 @@ package chess
 import (
 	"fmt"
 	"log"
+	"strings"
 )
 
 // BoardSize number of squares along one edge of the board
@@ -77,24 +78,32 @@ func (b *Board) getBoardMap() boardMap {
 	return ret
 }
 
-func (b boardMap) print() {
+func (b boardMap) String() string {
+	ret := strings.Builder{}
+	ret.WriteRune(' ')
+	for i := 0; i < BoardSize; i++ {
+		ret.WriteRune(rune(i) + 'A')
+	}
+	ret.WriteRune('\n')
 	for i := BoardSize - 1; i >= 0; i-- {
-		fmt.Printf("%d", i+1)
+		ret.WriteString(fmt.Sprintf("%d", i+1))
 		for j := 0; j < BoardSize; j++ {
 			piece := b[j][i]
 			if piece == nil {
-				fmt.Print(" ")
+				ret.WriteRune(' ')
 			} else {
-				fmt.Printf("%c", piece.Symbol())
+				ret.WriteRune(piece.Symbol())
 			}
 		}
-		fmt.Println()
+		ret.WriteString(fmt.Sprintf("%d", i+1))
+		ret.WriteRune('\n')
 	}
-	fmt.Print(" ")
+	ret.WriteRune(' ')
 	for i := 0; i < BoardSize; i++ {
-		fmt.Printf("%c", rune(i)+'A')
+		ret.WriteRune(rune(i) + 'A')
 	}
-	fmt.Println()
+	ret.WriteRune('\n')
+	return ret.String()
 }
 
 // Print print the current board setup
@@ -104,7 +113,7 @@ func (b *Board) Print() {
 		log.Fatal(err)
 	}
 	bm := b.getBoardMap()
-	bm.print()
+	fmt.Printf("%v", bm)
 }
 
 // NewBoard a new board setup for standard play
@@ -120,14 +129,33 @@ func NewBoard() *Board {
 			{PieceType: Pawn{}, Player: White, Location: NewLocation("F2")},
 			{PieceType: Pawn{}, Player: White, Location: NewLocation("G2")},
 			{PieceType: Pawn{}, Player: White, Location: NewLocation("H2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("A2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("B2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("C2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("D2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("E2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("F2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("G2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("H2")},
+
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("A7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("B7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("C7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("D7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("E7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("F7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("G7")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("H7")},
+
+			{PieceType: Rook{}, Player: White, Location: NewLocation("A1")},
+			{PieceType: Knight{}, Player: White, Location: NewLocation("B1")},
+			{PieceType: Bishop{}, Player: White, Location: NewLocation("C1")},
+			{PieceType: Queen{}, Player: White, Location: NewLocation("D1")},
+			{PieceType: King{}, Player: White, Location: NewLocation("E1")},
+			{PieceType: Bishop{}, Player: White, Location: NewLocation("F1")},
+			{PieceType: Knight{}, Player: White, Location: NewLocation("G1")},
+			{PieceType: Rook{}, Player: White, Location: NewLocation("H1")},
+
+			{PieceType: Rook{}, Player: Black, Location: NewLocation("A8")},
+			{PieceType: Knight{}, Player: Black, Location: NewLocation("B8")},
+			{PieceType: Bishop{}, Player: Black, Location: NewLocation("C8")},
+			{PieceType: Queen{}, Player: Black, Location: NewLocation("D8")},
+			{PieceType: King{}, Player: Black, Location: NewLocation("E8")},
+			{PieceType: Bishop{}, Player: Black, Location: NewLocation("F8")},
+			{PieceType: Knight{}, Player: Black, Location: NewLocation("G8")},
+			{PieceType: Rook{}, Player: Black, Location: NewLocation("H8")},
 		},
 	}
 }

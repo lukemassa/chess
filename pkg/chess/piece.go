@@ -21,3 +21,23 @@ func (p Piece) Symbol() rune {
 // Pawn a pawn
 type Pawn struct {
 }
+
+// Rook a rook
+type Rook struct {
+}
+
+// Bishop a bishop
+type Bishop struct {
+}
+
+// Knight a rook
+type Knight struct {
+}
+
+// Queen a rook
+type Queen struct {
+}
+
+// King a rook
+type King struct {
+}

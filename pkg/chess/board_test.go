@@ -2,6 +2,18 @@ package chess
 
 import "testing"
 
+const initialBoard = ` ABCDEFGH
+8♜♞♝♛♚♝♞♜8
+7♟♟♟♟♟♟♟♟7
+6        6
+5        5
+4        4
+3        3
+2♙♙♙♙♙♙♙♙2
+1♖♘♗♕♔♗♘♖1
+ ABCDEFGH
+`
+
 func TestNewLocation(t *testing.T) {
 
 	testCases := []struct {
@@ -35,5 +47,13 @@ func TestNewLocation(t *testing.T) {
 			}
 
 		})
+	}
+}
+
+func TestNewBoard(t *testing.T) {
+
+	board := NewBoard()
+	if board.getBoardMap().String() != initialBoard {
+		t.Errorf("Expected initial board: %s, found %s", initialBoard, board.getBoardMap().String())
 	}
 }
