@@ -1,10 +1,10 @@
 package main
 
 import (
-    "github.com/lukemassa/chess/pkg/chess"
+	"github.com/lukemassa/chess/pkg/chess"
 )
 
 func main() {
-    g := chess.Game{}
-    g.Print()
+	g := chess.NewGame()
+	g.Print()
 }
