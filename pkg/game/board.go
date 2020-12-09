@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"log"
 	"strings"
 )
 
@@ -76,9 +75,13 @@ func (b *Board) MakeMove(move Move) {
 			}
 		}
 	}
+	move.Piece.file = move.Destination.file
+	move.Piece.rank = move.Destination.rank
+	//b.Print()
 	b.Squares[move.Piece.Location.file][move.Piece.Location.rank] = nil
 
-	//	fmt.Printf("Now its %v", b.Squares[move.Piece.Location.file][move.Piece.Location.rank].Name())
+	fmt.Printf("Now its null %v\n", move.Piece.Location)
+	//b.Print()
 	b.Squares[move.Destination.file][move.Destination.rank] = &move.Piece
 	for i := 0; i < len(b.Pieces); i++ {
 		if b.Pieces[i] == move.Piece {
@@ -170,12 +173,12 @@ func (s Squares) String() string {
 }
 
 // Print print the current board setup
-func (b *Board) Print() {
-	err := b.Validate()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("%v", b.Squares)
+func (b *Board) String() string {
+	//err := b.Validate()
+	//if err != nil {
+	//log.Fatal(err)
+	//}
+	return fmt.Sprintf("%s", b.Squares)
 }
 
 // BlankBoard an empty board
