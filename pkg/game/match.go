@@ -5,7 +5,7 @@ type Player interface {
 	NextMove(b *Board) Move
 }
 
-// Play play the game
+// Play the game
 func (g *Game) Play() {
 	for {
 		player := g.Turn()
