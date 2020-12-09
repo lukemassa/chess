@@ -12,6 +12,7 @@ func (g *Game) Play() {
 		g.whitesTurn = !g.whitesTurn
 		move := player.NextMove(g.Board)
 		g.Board.MakeMove(move)
+		g.Print()
 		break
 	}
 }

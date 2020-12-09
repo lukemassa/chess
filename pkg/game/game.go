@@ -35,9 +35,11 @@ func (g *Game) Turn() Player {
 }
 
 // New get a new game of chess
-func New() *Game {
+func New(whitePlayer, blackPlayer Player) *Game {
 	return &Game{
-		Board:      NewBoard(),
-		whitesTurn: true,
+		Board:       NewBoard(),
+		whitesTurn:  true,
+		WhitePlayer: whitePlayer,
+		BlackPlayer: blackPlayer,
 	}
 }
