@@ -74,6 +74,13 @@ func TestBasicPieceMovements(t *testing.T) {
 			Bishop{},
 			White,
 			"E4",
+			"F3",
+			true,
+		},
+		{
+			Bishop{},
+			White,
+			"E4",
 			"E5",
 			false,
 		},
