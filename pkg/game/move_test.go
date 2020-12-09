@@ -47,10 +47,10 @@ func TestMoveBoard(t *testing.T) {
 				t.Errorf("Found error when validating board before move: %v", err)
 			}
 			move := Move{
-				Piece:       piece,
+				Piece:       &piece,
 				Destination: NewLocation(tc.newLocationString),
 			}
-			board.MakeMove(move)
+			board.MakeMove(&move)
 			if len(board.Pieces) != tc.expectedNumberOfPieces {
 				t.Errorf("Expected %d pieces after the move, found %d", tc.expectedNumberOfPieces, len(board.Pieces))
 			}

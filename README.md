@@ -28,3 +28,8 @@ Should know the rules, eventually will use to write a simple chess engine.
 - Second pass: Determine score after moves, pick one with largest advantage
 - Minimax?
 - Parallelize minimax?
+
+### Testing
+- Fix current failure in pieces on board
+- Consistent validation code
+- Walk through games and make sure they end as expected

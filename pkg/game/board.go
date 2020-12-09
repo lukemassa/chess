@@ -58,7 +58,7 @@ func (b *Board) IsValidMove(move Move) bool {
 
 // MakeMove make a specific move
 // returns true if this move won the game
-func (b *Board) MakeMove(move Move) bool {
+func (b *Board) MakeMove(move *Move) bool {
 
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
 	if currentPiece != nil {
@@ -78,9 +78,9 @@ func (b *Board) MakeMove(move Move) bool {
 
 	fmt.Printf("Now its null %v\n", move.Piece.Location)
 	//b.Print()
-	b.Squares[move.Destination.file][move.Destination.rank] = &move.Piece
+	b.Squares[move.Destination.file][move.Destination.rank] = move.Piece
 	for i := 0; i < len(b.Pieces); i++ {
-		if b.Pieces[i] == move.Piece {
+		if b.Pieces[i] == *move.Piece {
 			b.Pieces[i].Location = move.Destination
 			break
 		}
