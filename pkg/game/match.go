@@ -12,6 +12,10 @@ func (g *Game) Play() {
 		g.whitesTurn = !g.whitesTurn
 		move := player.NextMove(g.Board)
 		g.Board.MakeMove(move)
+		err := g.Board.Validate()
+		if err != nil {
+			//log.Fatalf("Error validating %v", err)
+		}
 		g.Print()
 		break
 	}

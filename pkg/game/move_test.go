@@ -44,7 +44,7 @@ func TestMoveBoard(t *testing.T) {
 			board.AddPiece(opponentPiece)
 			err := board.Validate()
 			if err != nil {
-				t.Errorf("Found error when validating board: %v", err)
+				t.Errorf("Found error when validating board before move: %v", err)
 			}
 			move := Move{
 				Piece:       piece,
@@ -56,7 +56,7 @@ func TestMoveBoard(t *testing.T) {
 			}
 			err = board.Validate()
 			if err != nil {
-				t.Errorf("Found error when validating board: %v", err)
+				t.Errorf("Found error when validating board after move: %v", err)
 			}
 		})
 	}

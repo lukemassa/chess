@@ -76,7 +76,9 @@ func (b *Board) MakeMove(move Move) {
 			}
 		}
 	}
+	b.Squares[move.Piece.Location.file][move.Piece.Location.rank] = nil
 
+	//	fmt.Printf("Now its %v", b.Squares[move.Piece.Location.file][move.Piece.Location.rank].Name())
 	b.Squares[move.Destination.file][move.Destination.rank] = &move.Piece
 	for i := 0; i < len(b.Pieces); i++ {
 		if b.Pieces[i] == move.Piece {
@@ -91,11 +93,34 @@ func (b *Board) MakeMove(move Move) {
 func (b *Board) Validate() error {
 	foundLocations := make(map[Location]bool)
 	for i := 0; i < len(b.Pieces); i++ {
+
 		l := b.Pieces[i].Location
 		if _, ok := foundLocations[l]; ok {
 			return fmt.Errorf("Found more than one piece at %s", l)
 		}
-		foundLocations[b.Pieces[i].Location] = true
+		foundLocations[l] = true
+		if b.Squares[l.file][l.rank] == nil {
+			return fmt.Errorf("Piece not marked in square at %s", l)
+		}
+	}
+	for i := 0; i < BoardSize; i++ {
+		for j := 0; j < BoardSize; j++ {
+			piece := b.Squares[i][j]
+			if piece == nil {
+				continue
+			}
+			fmt.Printf("Found non-nil: %s\n", piece)
+			foundPiece := false
+			for k := 0; k < len(b.Pieces); k++ {
+				if b.Pieces[k] == *piece {
+					foundPiece = true
+					break
+				}
+			}
+			if !foundPiece {
+				return fmt.Errorf("Could not find piece from %s on board", piece.Location)
+			}
+		}
 	}
 	return nil
 }
