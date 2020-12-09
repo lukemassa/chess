@@ -9,8 +9,8 @@ import (
 type InteractivePlayer struct {
 }
 
-// NextMove implemenation
-func (i *InteractivePlayer) NextMove(b *game.Board) game.Move {
+// NextMove implementation
+func (i *InteractivePlayer) NextMove(b *game.Board, c game.Color) game.Move {
 	return game.Move{
 		Piece:       *b.Squares[4][1],
 		Destination: game.NewLocation("E4"),

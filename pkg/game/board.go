@@ -57,7 +57,8 @@ func (b *Board) IsValidMove(move Move) bool {
 }
 
 // MakeMove make a specific move
-func (b *Board) MakeMove(move Move) {
+// returns true if this move won the game
+func (b *Board) MakeMove(move Move) bool {
 
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
 	if currentPiece != nil {
@@ -84,7 +85,8 @@ func (b *Board) MakeMove(move Move) {
 			break
 		}
 	}
-
+	// TODO: Implement check for end of game
+	return false
 }
 
 // Validate check to make sure we are looking at a legal board
@@ -129,7 +131,6 @@ func (b *Board) AddPiece(piece Piece) {
 	b.Squares[piece.file][piece.rank] = &piece
 }
 
-// Potential todo: don't make this a map, have this updated all the time?
 func getEmptySquares() Squares {
 	//Start with an empty board
 	ret := make([][]*Piece, BoardSize)
