@@ -60,31 +60,30 @@ func (b *Board) IsValidMove(move Move) bool {
 // returns true if this move won the game
 func (b *Board) MakeMove(move *Move) bool {
 
+	// If there's a piece there, remove it
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
 	if currentPiece != nil {
+		b.Squares[move.Destination.file][move.Destination.rank] = nil
 		for i := 0; i < len(b.Pieces); i++ {
 			if b.Pieces[i] == *currentPiece {
-				// Rmove this piece
+				// Remove this piece
 				b.Pieces[i] = b.Pieces[len(b.Pieces)-1]
 				b.Pieces = b.Pieces[:len(b.Pieces)-1]
 				break
 			}
 		}
 	}
-	move.Piece.file = move.Destination.file
-	move.Piece.rank = move.Destination.rank
 	//b.Print()
+	// Remove the pointer from the old place, add the pointer at the new place
 	b.Squares[move.Piece.Location.file][move.Piece.Location.rank] = nil
 
 	fmt.Printf("Now its null %v\n", move.Piece.Location)
 	//b.Print()
 	b.Squares[move.Destination.file][move.Destination.rank] = move.Piece
-	for i := 0; i < len(b.Pieces); i++ {
-		if b.Pieces[i] == *move.Piece {
-			b.Pieces[i].Location = move.Destination
-			break
-		}
-	}
+
+	// Update this piece's location
+	move.Piece.Location = move.Destination
+
 	// TODO: Implement check for end of game
 	return false
 }
