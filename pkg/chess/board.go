@@ -64,6 +64,11 @@ func (b *Board) Validate() error {
 	return nil
 }
 
+// AddPiece add a piece onto the board
+func (b *Board) AddPiece(piece Piece) {
+	b.Pieces = append(b.Pieces, piece)
+}
+
 // Potential todo: don't make this a map, have this updated all the time?
 func (b *Board) getBoardMap() boardMap {
 	//Start with an empty board
@@ -119,43 +124,47 @@ func (b *Board) Print() {
 // NewBoard a new board setup for standard play
 func NewBoard() *Board {
 
-	return &Board{
-		Pieces: []Piece{
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("A2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("B2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("C2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("D2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("E2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("F2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("G2")},
-			{PieceType: Pawn{}, Player: White, Location: NewLocation("H2")},
+	b := Board{}
 
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("A7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("B7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("C7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("D7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("E7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("F7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("G7")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("H7")},
+	for _, piece := range []Piece{
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("A2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("B2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("C2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("D2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("E2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("F2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("G2")},
+		{PieceType: Pawn{}, Player: White, Location: NewLocation("H2")},
 
-			{PieceType: Rook{}, Player: White, Location: NewLocation("A1")},
-			{PieceType: Knight{}, Player: White, Location: NewLocation("B1")},
-			{PieceType: Bishop{}, Player: White, Location: NewLocation("C1")},
-			{PieceType: Queen{}, Player: White, Location: NewLocation("D1")},
-			{PieceType: King{}, Player: White, Location: NewLocation("E1")},
-			{PieceType: Bishop{}, Player: White, Location: NewLocation("F1")},
-			{PieceType: Knight{}, Player: White, Location: NewLocation("G1")},
-			{PieceType: Rook{}, Player: White, Location: NewLocation("H1")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("A7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("B7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("C7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("D7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("E7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("F7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("G7")},
+		{PieceType: Pawn{}, Player: Black, Location: NewLocation("H7")},
 
-			{PieceType: Rook{}, Player: Black, Location: NewLocation("A8")},
-			{PieceType: Knight{}, Player: Black, Location: NewLocation("B8")},
-			{PieceType: Bishop{}, Player: Black, Location: NewLocation("C8")},
-			{PieceType: Queen{}, Player: Black, Location: NewLocation("D8")},
-			{PieceType: King{}, Player: Black, Location: NewLocation("E8")},
-			{PieceType: Bishop{}, Player: Black, Location: NewLocation("F8")},
-			{PieceType: Knight{}, Player: Black, Location: NewLocation("G8")},
-			{PieceType: Rook{}, Player: Black, Location: NewLocation("H8")},
-		},
+		{PieceType: Rook{}, Player: White, Location: NewLocation("A1")},
+		{PieceType: Knight{}, Player: White, Location: NewLocation("B1")},
+		{PieceType: Bishop{}, Player: White, Location: NewLocation("C1")},
+		{PieceType: Queen{}, Player: White, Location: NewLocation("D1")},
+		{PieceType: King{}, Player: White, Location: NewLocation("E1")},
+		{PieceType: Bishop{}, Player: White, Location: NewLocation("F1")},
+		{PieceType: Knight{}, Player: White, Location: NewLocation("G1")},
+		{PieceType: Rook{}, Player: White, Location: NewLocation("H1")},
+
+		{PieceType: Rook{}, Player: Black, Location: NewLocation("A8")},
+		{PieceType: Knight{}, Player: Black, Location: NewLocation("B8")},
+		{PieceType: Bishop{}, Player: Black, Location: NewLocation("C8")},
+		{PieceType: Queen{}, Player: Black, Location: NewLocation("D8")},
+		{PieceType: King{}, Player: Black, Location: NewLocation("E8")},
+		{PieceType: Bishop{}, Player: Black, Location: NewLocation("F8")},
+		{PieceType: Knight{}, Player: Black, Location: NewLocation("G8")},
+		{PieceType: Rook{}, Player: Black, Location: NewLocation("H8")},
+	} {
+		b.AddPiece(piece)
 	}
+
+	return &b
 }

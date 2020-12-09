@@ -5,6 +5,7 @@ type PieceType interface {
 	Name() string
 	SymbolMap() map[Player]rune
 	IsValidMove(currentLocation, newLocation Location, player Player) bool
+	CanCapture(currentLocation, opponentLocation Location, player Player) bool
 }
 
 // Piece an actual piece
@@ -98,7 +99,6 @@ func (r Rook) IsValidMove(currentLocation, newLocation Location, player Player) 
 func (k Knight) IsValidMove(currentLocation, newLocation Location, player Player) bool {
 	rankDiff := abs(currentLocation.rank - newLocation.rank)
 	fileDiff := abs(currentLocation.file - newLocation.file)
-	//fmt.Printf("Going from %s to %s: rankdiff is %d, filediff is %d", currentLocation, newLocation, rankDiff, fileDiff)
 	if (rankDiff == 2 && fileDiff == 1) || (rankDiff == 1 && fileDiff == 2) {
 		return true
 	}
@@ -123,4 +123,34 @@ func (k King) IsValidMove(currentLocation, newLocation Location, player Player) 
 		return true
 	}
 	return false
+}
+
+// CanCapture from a pawn's perspective
+func (p Pawn) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+	return false
+}
+
+// CanCapture from a rook's perspective
+func (r Rook) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+	return r.IsValidMove(currentLocation, opponentLocation, player)
+}
+
+// CanCapture from a knight's perspective
+func (k Knight) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+	return k.IsValidMove(currentLocation, opponentLocation, player)
+}
+
+// CanCapture from a bishop's perspective
+func (b Bishop) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+	return b.IsValidMove(currentLocation, opponentLocation, player)
+}
+
+// CanCapture from a queen's perspective
+func (q Queen) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+	return q.IsValidMove(currentLocation, opponentLocation, player)
+}
+
+// CanCapture from a king's perspective
+func (k King) CanCapture(currentLocation, opponentLocation Location, player Player) bool {
+	return k.IsValidMove(currentLocation, opponentLocation, player)
 }
