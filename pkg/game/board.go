@@ -56,11 +56,6 @@ func (b *Board) IsValidMove(move Move) bool {
 	return move.Piece.IsValidMove(move.Destination, b)
 }
 
-// RemovePiece from the board
-func (b *Board) RemovePiece(piece Piece) {
-
-}
-
 // MakeMove make a specific move
 func (b *Board) MakeMove(move Move) {
 
