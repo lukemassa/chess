@@ -30,6 +30,9 @@ func TestNewLocation(t *testing.T) {
 			if location.rank != tc.expectedRank {
 				t.Errorf("Expected rank %d, got rank %d", tc.expectedRank, location.rank)
 			}
+			if location.String() != tc.locationString {
+				t.Errorf("Expected format string of %s, got %s", location.String(), tc.locationString)
+			}
 
 		})
 	}

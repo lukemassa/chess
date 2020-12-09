@@ -1,6 +1,9 @@
 package chess
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // BoardSize number of squares along one edge of the board
 const BoardSize = 8
@@ -15,11 +18,14 @@ type boardMap [][]*Piece
 
 // Location on the board
 type Location struct {
-
 	// A-F
 	file uint8
 	// 1-8
 	rank uint8
+}
+
+func (l Location) String() string {
+	return fmt.Sprintf("%c%c", l.file+'A', l.rank+'1')
 }
 
 // NewLocation get a new location
@@ -44,6 +50,19 @@ func NewLocation(locationString string) Location {
 	}
 }
 
+// Validate check to make sure we are looking at a legal board
+func (b *Board) Validate() error {
+	foundLocations := make(map[Location]bool)
+	for i := 0; i < len(b.Pieces); i++ {
+		l := b.Pieces[i].Location
+		if _, ok := foundLocations[l]; ok {
+			return fmt.Errorf("Found more than one piece at %s", l)
+		}
+		foundLocations[b.Pieces[i].Location] = true
+	}
+	return nil
+}
+
 // Potential todo: don't make this a map, have this updated all the time?
 func (b *Board) getBoardMap() boardMap {
 	//Start with an empty board
@@ -53,7 +72,6 @@ func (b *Board) getBoardMap() boardMap {
 	}
 	for i := 0; i < len(b.Pieces); i++ {
 		piece := b.Pieces[i]
-		fmt.Printf("Putting a piece at %dx%d", piece.Location.file, piece.Location.rank)
 		ret[piece.Location.file][piece.Location.rank] = &piece
 	}
 	return ret
@@ -72,6 +90,7 @@ func (b boardMap) print() {
 		}
 		fmt.Println()
 	}
+	fmt.Print(" ")
 	for i := 0; i < BoardSize; i++ {
 		fmt.Printf("%c", rune(i)+'A')
 	}
@@ -80,6 +99,10 @@ func (b boardMap) print() {
 
 // Print print the current board setup
 func (b *Board) Print() {
+	err := b.Validate()
+	if err != nil {
+		log.Fatal(err)
+	}
 	bm := b.getBoardMap()
 	bm.print()
 }
@@ -89,8 +112,22 @@ func NewBoard() *Board {
 
 	return &Board{
 		Pieces: []Piece{
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("A2")},
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("B2")},
 			{PieceType: Pawn{}, Player: White, Location: NewLocation("C2")},
-			{PieceType: Pawn{}, Player: Black, Location: NewLocation("C7")},
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("D2")},
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("E2")},
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("F2")},
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("G2")},
+			{PieceType: Pawn{}, Player: White, Location: NewLocation("H2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("A2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("B2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("C2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("D2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("E2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("F2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("G2")},
+			{PieceType: Pawn{}, Player: Black, Location: NewLocation("H2")},
 		},
 	}
 }
