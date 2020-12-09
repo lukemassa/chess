@@ -16,7 +16,7 @@ type Piece struct {
 }
 
 // IsValidMove can this piece be moved to new square
-func (p Piece) IsValidMove(newLocation Location) bool {
+func (p Piece) IsValidMove(newLocation Location, b *Board) bool {
 	// TODO: Is one of my pieces there/etc
 	return p.PieceType.IsValidMove(p.Location, newLocation, p.Player)
 }

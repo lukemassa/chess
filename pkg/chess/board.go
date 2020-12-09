@@ -15,7 +15,7 @@ type Board struct {
 	Squares
 }
 
-// boardMap a description of what squares are filled how
+// Squares a description of what squares are filled how
 type Squares [][]*Piece
 
 // Location on the board
@@ -118,12 +118,18 @@ func (b *Board) Print() {
 	fmt.Printf("%v", b.Squares)
 }
 
+// BlankBoard an empty board
+func BlankBoard() *Board {
+
+	return &Board{
+		Squares: getEmptySquares(),
+	}
+}
+
 // NewBoard a new board setup for standard play
 func NewBoard() *Board {
 
-	b := Board{
-		Squares: getEmptySquares(),
-	}
+	b := BlankBoard()
 
 	for _, piece := range []Piece{
 		{PieceType: Pawn{}, Player: White, Location: NewLocation("A2")},
@@ -165,5 +171,5 @@ func NewBoard() *Board {
 		b.AddPiece(piece)
 	}
 
-	return &b
+	return b
 }

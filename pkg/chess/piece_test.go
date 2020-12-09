@@ -142,6 +142,7 @@ func TestPieceMovements(t *testing.T) {
 		},
 	}
 
+	board := BlankBoard()
 	for _, tc := range testCases {
 		prefix := "Can move"
 		if !tc.expectedIsValidMove {
@@ -154,7 +155,7 @@ func TestPieceMovements(t *testing.T) {
 				Player:    tc.player,
 				Location:  NewLocation(tc.currentLocationString),
 			}
-			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString))
+			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)
 
 			if actualIsValidMove && !tc.expectedIsValidMove {
 				t.Errorf("Expected invalid move")
