@@ -2,6 +2,11 @@ package chess
 
 // Boring class that just lists the name and symbol of all the pieces
 
+// Symbol rune for this piece
+func (p Piece) Symbol() rune {
+	return p.PieceType.SymbolMap()[p.Player]
+}
+
 // Name of pawn
 func (p Pawn) Name() string {
 	return "Pawn"
