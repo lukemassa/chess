@@ -12,6 +12,7 @@ type InteractivePlayer struct {
 }
 
 // NextMove implementation
+// Given a board, it presents the board to the user and asks them to enter a move
 func (i *InteractivePlayer) NextMove(board *game.Board, color game.Color) game.Move {
 	fmt.Printf("%s\n", board)
 	var moveString string
