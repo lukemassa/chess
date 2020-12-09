@@ -2,7 +2,7 @@ package chess
 
 import "testing"
 
-const initialBoard = ` ABCDEFGH
+const initialSquares = ` ABCDEFGH
 8♜♞♝♛♚♝♞♜8
 7♟♟♟♟♟♟♟♟7
 6        6
@@ -53,7 +53,7 @@ func TestNewLocation(t *testing.T) {
 func TestNewBoard(t *testing.T) {
 
 	board := NewBoard()
-	if board.getBoardMap().String() != initialBoard {
-		t.Errorf("Expected initial board: %s, found %s", initialBoard, board.getBoardMap().String())
+	if board.Squares.String() != initialSquares {
+		t.Errorf("Expected initial board: %s, found %s", initialSquares, board.Squares)
 	}
 }

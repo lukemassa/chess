@@ -12,10 +12,11 @@ const BoardSize = 8
 // Board an abstraction for the current setup of the board
 type Board struct {
 	Pieces []Piece
+	Squares
 }
 
 // boardMap a description of what squares are filled how
-type boardMap [][]*Piece
+type Squares [][]*Piece
 
 // Location on the board
 type Location struct {
@@ -67,23 +68,20 @@ func (b *Board) Validate() error {
 // AddPiece add a piece onto the board
 func (b *Board) AddPiece(piece Piece) {
 	b.Pieces = append(b.Pieces, piece)
+	b.Squares[piece.file][piece.rank] = &piece
 }
 
 // Potential todo: don't make this a map, have this updated all the time?
-func (b *Board) getBoardMap() boardMap {
+func getEmptySquares() Squares {
 	//Start with an empty board
 	ret := make([][]*Piece, BoardSize)
 	for i := 0; i < BoardSize; i++ {
 		ret[i] = make([]*Piece, BoardSize)
 	}
-	for i := 0; i < len(b.Pieces); i++ {
-		piece := b.Pieces[i]
-		ret[piece.Location.file][piece.Location.rank] = &piece
-	}
 	return ret
 }
 
-func (b boardMap) String() string {
+func (s Squares) String() string {
 	ret := strings.Builder{}
 	ret.WriteRune(' ')
 	for i := 0; i < BoardSize; i++ {
@@ -93,7 +91,7 @@ func (b boardMap) String() string {
 	for i := BoardSize - 1; i >= 0; i-- {
 		ret.WriteString(fmt.Sprintf("%d", i+1))
 		for j := 0; j < BoardSize; j++ {
-			piece := b[j][i]
+			piece := s[j][i]
 			if piece == nil {
 				ret.WriteRune(' ')
 			} else {
@@ -117,14 +115,15 @@ func (b *Board) Print() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	bm := b.getBoardMap()
-	fmt.Printf("%v", bm)
+	fmt.Printf("%v", b.Squares)
 }
 
 // NewBoard a new board setup for standard play
 func NewBoard() *Board {
 
-	b := Board{}
+	b := Board{
+		Squares: getEmptySquares(),
+	}
 
 	for _, piece := range []Piece{
 		{PieceType: Pawn{}, Player: White, Location: NewLocation("A2")},
