@@ -3,7 +3,8 @@ package game
 // PieceType abstraction for a single piece
 type PieceType interface {
 	Name() string
-	SymbolMap() map[Color]rune
+	BlackSymbol() rune
+	WhiteSymbol() rune
 	IsValidMove(currentLocation, newLocation Location, color Color) bool
 	CanCapture(currentLocation, opponentLocation Location, color Color) bool
 }

@@ -4,83 +4,104 @@ package game
 
 // Symbol rune for this piece
 func (p Piece) Symbol() rune {
-	return p.PieceType.SymbolMap()[p.Color]
+	if p.Color == White {
+		return p.WhiteSymbol()
+	}
+	return p.BlackSymbol()
 }
 
+////////////////////////////////////////////////////////////////////////////////////
 // Name of pawn
 func (p Pawn) Name() string {
 	return "Pawn"
 }
 
-// SymbolMap for pawn
-func (p Pawn) SymbolMap() map[Color]rune {
-	return map[Color]rune{
-		Black: '♟',
-		White: '♙',
-	}
+// WhiteSymbol for pawn
+func (p Pawn) WhiteSymbol() rune {
+	return '♙'
 }
 
+// BlackSymbol for pawn
+func (p Pawn) BlackSymbol() rune {
+	return '♟'
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 // Name of rook
 func (r Rook) Name() string {
 	return "Rook"
 }
 
-// SymbolMap for rook
-func (r Rook) SymbolMap() map[Color]rune {
-	return map[Color]rune{
-		Black: '♜',
-		White: '♖',
-	}
+// WhiteSymbol for rook
+func (r Rook) WhiteSymbol() rune {
+	return '♖'
 }
 
+// BlackSymbol for rook
+func (r Rook) BlackSymbol() rune {
+	return '♜'
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 // Name of knight
 func (k Knight) Name() string {
 	return "Knight"
 }
 
-// SymbolMap for knight
-func (k Knight) SymbolMap() map[Color]rune {
-	return map[Color]rune{
-		Black: '♞',
-		White: '♘',
-	}
+// WhiteSymbol for knight
+func (k Knight) WhiteSymbol() rune {
+	return '♘'
 }
 
-// Name of queen
-func (q Queen) Name() string {
-	return "Queen"
+// BlackSymbol for knight
+func (k Knight) BlackSymbol() rune {
+	return '♞'
 }
 
-// SymbolMap for knight
-func (q Queen) SymbolMap() map[Color]rune {
-	return map[Color]rune{
-		Black: '♛',
-		White: '♕',
-	}
-}
-
-// Name of king
-func (k King) Name() string {
-	return "King"
-}
-
-// SymbolMap for knight
-func (k King) SymbolMap() map[Color]rune {
-	return map[Color]rune{
-		Black: '♚',
-		White: '♔',
-	}
-}
-
+////////////////////////////////////////////////////////////////////////////////////
 // Name of Bishop
 func (b Bishop) Name() string {
 	return "Bishop"
 }
 
-// SymbolMap for knight
-func (b Bishop) SymbolMap() map[Color]rune {
-	return map[Color]rune{
-		Black: '♝',
-		White: '♗',
-	}
+// WhiteSymbol for knight
+func (b Bishop) WhiteSymbol() rune {
+	return '♗'
+}
+
+// BlackSymbol for knight
+func (b Bishop) BlackSymbol() rune {
+	return '♝'
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+// Name of queen
+func (q Queen) Name() string {
+	return "Queen"
+}
+
+// WhiteSymbol for queen
+func (q Queen) WhiteSymbol() rune {
+	return '♕'
+}
+
+// BlackSymbol for queen
+func (q Queen) BlackSymbol() rune {
+	return '♛'
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+// Name of king
+func (k King) Name() string {
+	return "King"
+}
+
+// WhiteSymbol for knight
+func (k King) WhiteSymbol() rune {
+	return '♔'
+}
+
+// BlackSymbol for knight
+func (k King) BlackSymbol() rune {
+	return '♚'
 }
