@@ -1,7 +1,6 @@
 package game
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -111,18 +110,6 @@ func (b *Board) MakeMove(move *Move, c Color) bool {
 	return false
 }
 
-// ValidateMove see if this is a valid move
-func (b *Board) ValidateMove(move *Move) error {
-	// TODO: Should this code go into IsValidMove?
-	if move.Piece == nil {
-		return errors.New("Null piece in move")
-	}
-	if !move.Piece.IsValidMove(move.Destination, b) {
-		return errors.New("Is not a legal move")
-	}
-	return nil
-}
-
 // Validate check to make sure we are looking at a legal board
 func (b *Board) Validate() error {
 	foundLocations := make(map[Location]bool)
@@ -185,9 +172,12 @@ func (b *Board) FailOnInvalidMove(move *Move, color Color) {
 	if move.Piece.Color != color {
 		log.Fatalf("Player %s moved piece of color %s", color, move.Piece.Color)
 	}
-	err := b.ValidateMove(move)
-	if err != nil {
-		log.Fatalf("Move is in invalid: %s", err)
+
+	if move.Piece == nil {
+		log.Fatal("Null piece in move")
+	}
+	if !move.Piece.IsValidMove(move.Destination, b) {
+		log.Fatal("Is not a legal move")
 	}
 }
 

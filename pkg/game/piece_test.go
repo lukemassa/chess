@@ -64,6 +64,41 @@ func TestBasicPieceMovements(t *testing.T) {
 			false,
 		},
 		{
+			Rook{},
+			White,
+			"E4",
+			"E5",
+			true,
+		},
+		{
+			Rook{},
+			White,
+			"E4",
+			"E6",
+			true,
+		},
+		{
+			Rook{},
+			White,
+			"E4",
+			"C4",
+			true,
+		},
+		{
+			Rook{},
+			White,
+			"E4",
+			"F5",
+			false,
+		},
+		{
+			Rook{},
+			White,
+			"E4",
+			"F6",
+			false,
+		},
+		{
 			Bishop{},
 			White,
 			"E4",
@@ -103,6 +138,13 @@ func TestBasicPieceMovements(t *testing.T) {
 			Black,
 			"E2",
 			"E4",
+			false,
+		},
+		{
+			Pawn{},
+			Black,
+			"E2",
+			"E6",
 			false,
 		},
 		{
@@ -180,29 +222,31 @@ func TestPawnCapturingMovement(t *testing.T) {
 	// Check to make sure the pawn is moving around correctly
 	// Use a white pawn starting on E2
 	testCases := []struct {
+		name                   string
 		newLocationString      string
 		opponentLocationString string
 		expectedIsValidMove    bool
 	}{
 		{
+			"normal pawn move",
 			"E4",
 			"A8",
 			true,
 		},
-		// Cannot capture forward with a pawn
 		{
+			"Cannot capture forward with a pawn",
 			"E4",
 			"E4",
 			false,
 		},
-		// Cannot move diagonally unless capturing
 		{
+			"Cannot move diagonally unless capturing",
 			"D3",
 			"E4",
 			false,
 		},
-		// Can capture diagonally
 		{
+			"Can capture diagonally",
 			"D3",
 			"D3",
 			true,
@@ -215,7 +259,7 @@ func TestPawnCapturingMovement(t *testing.T) {
 		if !tc.expectedIsValidMove {
 			prefix = "Can't move"
 		}
-		testName := fmt.Sprintf("%s pawn to %s with opponent on %s", prefix, tc.newLocationString, tc.opponentLocationString)
+		testName := fmt.Sprintf("%s pawn to %s with opponent on %s: %s", prefix, tc.newLocationString, tc.opponentLocationString, tc.name)
 		t.Run(testName, func(t *testing.T) {
 			board := BlankBoard(false) // Doing
 			opponentPiece := Piece{

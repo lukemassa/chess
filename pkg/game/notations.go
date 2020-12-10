@@ -28,11 +28,11 @@ func (c CoordinateNotation) ConvertToMove(b *Board, notation string, color Color
 	}
 	current, err := ParseLocation(coordinates[0])
 	if err != nil {
-		return nil, fmt.Errorf("Error parsing first coordinate: %s: %s", coordinates[0], err)
+		return nil, fmt.Errorf("Error parsing first coordinate %s: %s", coordinates[0], err)
 	}
 	destination, err := ParseLocation(coordinates[1])
 	if err != nil {
-		return nil, fmt.Errorf("Error parsing second coordinate: %s: %s", coordinates[1], err)
+		return nil, fmt.Errorf("Error parsing second coordinate %s: %s", coordinates[1], err)
 	}
 	piece := b.Squares[current.file][current.rank]
 	if piece == nil {
