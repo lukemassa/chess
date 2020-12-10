@@ -77,3 +77,60 @@ func TestMoveBoard(t *testing.T) {
 	}
 
 }
+
+func TestPiecesBetween(t *testing.T) {
+	testCases := []struct {
+		location1            string
+		location2            string
+		pieceLocation        string
+		expectedPieceBetween bool
+	}{
+		{
+			"A1",
+			"A8",
+			"A4",
+			true,
+		},
+		{
+			"A1",
+			"A8",
+			"B4",
+			false,
+		},
+		{
+			"A1",
+			"H1",
+			"D1",
+			true,
+		},
+		{
+			"A1",
+			"H1",
+			"D2",
+			false,
+		},
+	}
+
+	for _, tc := range testCases {
+
+		prefix := "Do not expect"
+		if tc.expectedPieceBetween {
+			prefix = "Expect"
+		}
+		t.Run(fmt.Sprintf("%s piece %s is between %s and %s", prefix, tc.pieceLocation, tc.location1, tc.location2), func(t *testing.T) {
+			board := BlankBoard(true)
+			piece := Piece{
+				PieceType: Rook{},
+				Color:     White,
+				Location:  MustParseLocation(tc.pieceLocation),
+			}
+			board.AddPiece(&piece)
+
+			actualPieceBetween := board.PieceBetween(MustParseLocation(tc.location1), MustParseLocation(tc.location2))
+			if actualPieceBetween != tc.expectedPieceBetween {
+				t.Errorf("Expected actual piece between %v, found %v", tc.expectedPieceBetween, actualPieceBetween)
+			}
+		})
+	}
+
+}
