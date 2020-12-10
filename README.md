@@ -12,7 +12,6 @@ Should know the rules, eventually will use to write a simple chess engine.
 - Castling
 - Track whether the king/rook has moved for castling
    Maybe a simple "castleQueensideAllowed" and "castleKingsideAllowed" variables that are set to false when those pieces move?
-- Prevent moving if a piece is intervening for non-knights
 - Pawn promotion
 - En Passant
 
