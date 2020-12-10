@@ -78,6 +78,71 @@ func TestCapture(t *testing.T) {
 
 }
 
+func TestValidMove(t *testing.T) {
+
+	// White pawn on e2, White Queen on e4, Black queen on d3
+	testCases := []struct {
+		name              string
+		newLocationString string
+		expectedValidMove bool
+	}{
+		{
+			"Move ahead",
+			"E3",
+			true,
+		},
+		{
+			"Move ahead where a piece is",
+			"E4",
+			false,
+		},
+		{
+			"Capture piece",
+			"D3",
+			true,
+		},
+		{
+			"Do not capture piece",
+			"F3",
+			false,
+		},
+	}
+
+	for _, tc := range testCases {
+
+		t.Run(fmt.Sprintf("Moving to %s: %s", tc.newLocationString, tc.name), func(t *testing.T) {
+			board := BlankBoard(true)
+			piece := Piece{
+				PieceType: Pawn{},
+				Color:     White,
+				Location:  MustParseLocation("E2"),
+			}
+			board.AddPiece(&piece)
+
+			board.AddPiece(&Piece{
+				PieceType: Queen{},
+				Color:     White,
+				Location:  MustParseLocation("E4"),
+			})
+			board.AddPiece(&Piece{
+				PieceType: Queen{},
+				Color:     Black,
+				Location:  MustParseLocation("D3"),
+			})
+			actualIsValid := piece.IsValidMove(MustParseLocation(tc.newLocationString), board)
+
+			if actualIsValid && !tc.expectedValidMove {
+				t.Error("Expected invalid move")
+			}
+			if !actualIsValid && tc.expectedValidMove {
+				t.Error("Expected valid move")
+			}
+
+		})
+	}
+
+}
+
 func TestPiecesBetween(t *testing.T) {
 	testCases := []struct {
 		location1            string
