@@ -105,8 +105,26 @@ func TestPiecesBetween(t *testing.T) {
 		},
 		{
 			"A1",
-			"H1",
+			"H8",
+			"D4",
+			true,
+		},
+		{
+			"A1",
+			"H8",
 			"D2",
+			false,
+		},
+		{
+			"A8",
+			"H1",
+			"D5",
+			true,
+		},
+		{
+			"A1",
+			"H8",
+			"D1",
 			false,
 		},
 	}

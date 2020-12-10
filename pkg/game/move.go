@@ -32,20 +32,44 @@ func (b *Board) PieceBetween(location1, location2 Location) bool {
 
 	var filedelta int8
 	var rankdelta int8
-	//fmt.Printf("%s -> %s\n\n", location1, location2)
+
+	// Same file
 	if location1.file == location2.file {
-		if location1.rank > location2.rank {
-			rankdelta = -1
-		} else {
+		if location1.rank < location2.rank {
 			rankdelta = 1
+		} else {
+			rankdelta = -1
 		}
 		return b.pieceBetween(location1, location2, filedelta, rankdelta)
 	}
+	// Same rank
 	if location1.rank == location2.rank {
-		if location1.file > location2.file {
-			filedelta = -1
-		} else {
+		if location1.file < location2.file {
 			filedelta = 1
+		} else {
+			filedelta = -1
+		}
+		return b.pieceBetween(location1, location2, filedelta, rankdelta)
+	}
+	// Diagonal upward
+	if location1.rank-location2.rank == location1.file-location2.file {
+		if location1.file < location2.file {
+			filedelta = 1
+			rankdelta = 1
+		} else {
+			filedelta = -1
+			rankdelta = -1
+		}
+		return b.pieceBetween(location1, location2, filedelta, rankdelta)
+	}
+	// Diagonal downward
+	if location1.rank-location2.rank == location2.file-location1.file {
+		if location1.file < location2.file {
+			filedelta = 1
+			rankdelta = -1
+		} else {
+			filedelta = -1
+			rankdelta = 1
 		}
 		return b.pieceBetween(location1, location2, filedelta, rankdelta)
 	}
@@ -56,9 +80,7 @@ func (b *Board) pieceBetween(location1, location2 Location, filedelta, rankdelta
 	// Walks between location1 and location2 by the deltas
 	rank := location1.rank + rankdelta
 	file := location1.file + filedelta
-	//fmt.Printf("File %d, rank %d, whereas goal is %s\n", file, rank, location2)
 	for rank != location2.rank || file != location2.file {
-		//fmt.Printf("Looking at %s\n", Location{
 
 		if b.Squares[file][rank] != nil {
 			return true
@@ -66,7 +88,6 @@ func (b *Board) pieceBetween(location1, location2 Location, filedelta, rankdelta
 		file += filedelta
 		rank += rankdelta
 	}
-	//	fmt.Println()
 	return false
 }
 

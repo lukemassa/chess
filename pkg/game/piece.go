@@ -22,13 +22,13 @@ func abs(x int8) int8 {
 	return x
 }
 
-func onSameRankOrFile(locationA, locationB Location) bool {
-	return locationA.rank == locationB.rank || locationA.file == locationB.file
+func onSameRankOrFile(location1, location2 Location) bool {
+	return location1.rank == location2.rank || location1.file == location2.file
 }
 
-func onSameDiagonal(locationA, locationB Location) bool {
-	return locationA.rank-locationB.rank == locationA.file-locationB.file ||
-		locationA.rank-locationB.rank == locationB.file-locationA.file
+func onSameDiagonal(location1, location2 Location) bool {
+	return location1.rank-location2.rank == location1.file-location2.file ||
+		location1.rank-location2.rank == location2.file-location1.file
 }
 
 // Pawn a pawn
