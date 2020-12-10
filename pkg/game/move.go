@@ -8,22 +8,24 @@ type Move struct {
 
 // IsValidMove can this piece be moved to new square
 func (p Piece) IsValidMove(newLocation Location, b *Board) bool {
-	targetPiece := b.Squares[newLocation.file][newLocation.rank]
 
-	// TODO: Make sure there are no pieces in the way
+	// Cannot move if there are intervening pieces
 	if p.Name() != "knight" && b.PieceBetween(p.Location, newLocation) {
 		return false
 	}
 
-	// Target is empty
-	if targetPiece == nil {
-		return p.PieceType.IsValidMove(p.Location, newLocation, p.Color)
-	}
+	targetPiece := b.Squares[newLocation.file][newLocation.rank]
 
 	// One of our pieces is already there
 	if targetPiece.Color == p.Color {
 		return false
 	}
+
+	// Target square is empty
+	if targetPiece == nil {
+		return p.PieceType.IsValidMove(p.Location, newLocation, p.Color)
+	}
+
 	return p.PieceType.CanCapture(p.Location, newLocation, p.Color)
 }
 
