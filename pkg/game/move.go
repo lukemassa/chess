@@ -22,3 +22,8 @@ func (p Piece) IsValidMove(newLocation Location, b *Board) bool {
 	}
 	return p.PieceType.CanCapture(p.Location, newLocation, p.Color)
 }
+
+// IsValidMove is this move valid on this board
+func (m *Move) IsValidMove(b *Board) bool {
+	return m.Piece.IsValidMove(m.Destination, b)
+}

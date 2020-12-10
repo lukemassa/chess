@@ -30,5 +30,4 @@ Should know the rules, eventually will use to write a simple chess engine.
 - Parallelize minimax?
 
 ### Testing
-- Consistent validation code
 - Walk through games and make sure they end as expected

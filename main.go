@@ -6,6 +6,10 @@ import (
 )
 
 func main() {
-	g := game.New(&players.InteractivePlayer{}, &players.InteractivePlayer{}, true)
+	g := game.New(&players.InteractivePlayer{
+		Notation: game.CoordinateNotation{},
+	}, &players.InteractivePlayer{
+		Notation: game.CoordinateNotation{},
+	}, true)
 	g.Play()
 }

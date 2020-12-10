@@ -33,9 +33,9 @@ func TestMoveBoard(t *testing.T) {
 			piece := Piece{
 				PieceType: Rook{},
 				Color:     White,
-				Location:  NewLocation(tc.currentLocationString),
+				Location:  MustParseLocation(tc.currentLocationString),
 			}
-			opponentOriginalLocation := NewLocation(tc.opponentLocationString)
+			opponentOriginalLocation := MustParseLocation(tc.opponentLocationString)
 			opponentPiece := Piece{
 				PieceType: Queen{},
 				Color:     Black,
@@ -49,7 +49,7 @@ func TestMoveBoard(t *testing.T) {
 			}
 			move := Move{
 				Piece:       &piece,
-				Destination: NewLocation(tc.newLocationString),
+				Destination: MustParseLocation(tc.newLocationString),
 			}
 			board.MakeMove(&move)
 

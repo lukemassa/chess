@@ -35,7 +35,7 @@ func TestNewLocation(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.locationString, func(t *testing.T) {
-			location := NewLocation(tc.locationString)
+			location := MustParseLocation(tc.locationString)
 			if location.file != tc.expectedFile {
 				t.Errorf("Expected file %d, got file %d", tc.expectedFile, location.file)
 			}

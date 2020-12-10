@@ -160,9 +160,9 @@ func TestBasicPieceMovements(t *testing.T) {
 			piece := Piece{
 				PieceType: tc.pieceType,
 				Color:     tc.color,
-				Location:  NewLocation(tc.currentLocationString),
+				Location:  MustParseLocation(tc.currentLocationString),
 			}
-			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)
+			actualIsValidMove := piece.IsValidMove(MustParseLocation(tc.newLocationString), board)
 
 			if actualIsValidMove && !tc.expectedIsValidMove {
 				t.Errorf("Expected invalid move")
@@ -221,16 +221,16 @@ func TestPawnCapturingMovement(t *testing.T) {
 			opponentPiece := Piece{
 				PieceType: Queen{},
 				Color:     Black,
-				Location:  NewLocation(tc.opponentLocationString),
+				Location:  MustParseLocation(tc.opponentLocationString),
 			}
 			board.AddPiece(&opponentPiece)
 
 			piece := Piece{
 				PieceType: Pawn{},
 				Color:     White,
-				Location:  NewLocation("E2"),
+				Location:  MustParseLocation("E2"),
 			}
-			actualIsValidMove := piece.IsValidMove(NewLocation(tc.newLocationString), board)
+			actualIsValidMove := piece.IsValidMove(MustParseLocation(tc.newLocationString), board)
 
 			if actualIsValidMove && !tc.expectedIsValidMove {
 				t.Errorf("Expected invalid move")

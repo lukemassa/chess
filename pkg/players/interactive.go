@@ -9,6 +9,7 @@ import (
 
 // InteractivePlayer a player of chess
 type InteractivePlayer struct {
+	Notation game.Notation
 }
 
 // NextMove implementation
@@ -19,7 +20,10 @@ func (i *InteractivePlayer) NextMove(board *game.Board, color game.Color) *game.
 	for {
 		fmt.Printf("%s move: ", color)
 		fmt.Scanln(&moveString)
-		move, err := board.ConvertAlgebraicToMove(moveString)
+		if moveString == "" {
+			continue
+		}
+		move, err := i.Notation.ConvertToMove(board, moveString)
 		if err == nil {
 			return move
 		}

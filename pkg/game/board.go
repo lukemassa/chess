@@ -33,26 +33,45 @@ func (l Location) String() string {
 	return fmt.Sprintf("%c%c", l.file+'A', l.rank+'1')
 }
 
-// NewLocation get a new location
-func NewLocation(locationString string) Location {
+// MustParseLocation exits the program if it can't parse the location
+// Use sparingly/only for literals
+func MustParseLocation(locationString string) Location {
+	location, err := ParseLocation(locationString)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return location
+}
 
+func uppercase(r rune) rune {
+	// a little copying is better than a little dependency
+	return r + ('A' - 'a')
+}
+
+// ParseLocation get a new location based on the location string
+func ParseLocation(locationString string) (Location, error) {
+
+	var location Location
 	r := []rune(locationString)
 	// hm maybe not panic? Not sure what's best here
 	if len(r) != 2 {
-		panic(fmt.Sprintf("Invalid location: %s: Invalid number of characters", locationString))
+		return location, fmt.Errorf("Invalid location: %s: Invalid number of characters", locationString)
+	}
+	if r[0] >= 'a' && r[0] <= 'z' {
+		r[0] = uppercase(r[0])
 	}
 	if r[0] < 'A' || r[0] > 'H' {
-		panic(fmt.Sprintf("Invalid location: %s: First character is not between A and H", locationString))
+		return location, fmt.Errorf("Invalid location: %s: First character is not between A and H", locationString)
 	}
 	if r[1] < '1' || r[1] > '8' {
-		panic(fmt.Sprintf("Invalid location: %s: Second character is not betweeen 1 and 8", locationString))
+		return location, fmt.Errorf("Invalid location: %s: Second character is not betweeen 1 and 8", locationString)
 	}
 	fileAsInt := int8(r[0]) - 'A'
 	rankAsInt := int8(r[1]) - '1'
 	return Location{
 		file: fileAsInt,
 		rank: rankAsInt,
-	}
+	}, nil
 }
 
 // IsValidMove can a given move be made
@@ -240,41 +259,41 @@ func NewBoard(validate bool) *Board {
 	b := BlankBoard(validate)
 
 	pieces := []Piece{
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("A2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("B2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("C2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("D2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("E2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("F2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("G2")},
-		{PieceType: Pawn{}, Color: White, Location: NewLocation("H2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("A2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("B2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("C2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("D2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("E2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("F2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("G2")},
+		{PieceType: Pawn{}, Color: White, Location: MustParseLocation("H2")},
 
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("A7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("B7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("C7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("D7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("E7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("F7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("G7")},
-		{PieceType: Pawn{}, Color: Black, Location: NewLocation("H7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("A7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("B7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("C7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("D7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("E7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("F7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("G7")},
+		{PieceType: Pawn{}, Color: Black, Location: MustParseLocation("H7")},
 
-		{PieceType: Rook{}, Color: White, Location: NewLocation("A1")},
-		{PieceType: Knight{}, Color: White, Location: NewLocation("B1")},
-		{PieceType: Bishop{}, Color: White, Location: NewLocation("C1")},
-		{PieceType: Queen{}, Color: White, Location: NewLocation("D1")},
-		{PieceType: King{}, Color: White, Location: NewLocation("E1")},
-		{PieceType: Bishop{}, Color: White, Location: NewLocation("F1")},
-		{PieceType: Knight{}, Color: White, Location: NewLocation("G1")},
-		{PieceType: Rook{}, Color: White, Location: NewLocation("H1")},
+		{PieceType: Rook{}, Color: White, Location: MustParseLocation("A1")},
+		{PieceType: Knight{}, Color: White, Location: MustParseLocation("B1")},
+		{PieceType: Bishop{}, Color: White, Location: MustParseLocation("C1")},
+		{PieceType: Queen{}, Color: White, Location: MustParseLocation("D1")},
+		{PieceType: King{}, Color: White, Location: MustParseLocation("E1")},
+		{PieceType: Bishop{}, Color: White, Location: MustParseLocation("F1")},
+		{PieceType: Knight{}, Color: White, Location: MustParseLocation("G1")},
+		{PieceType: Rook{}, Color: White, Location: MustParseLocation("H1")},
 
-		{PieceType: Rook{}, Color: Black, Location: NewLocation("A8")},
-		{PieceType: Knight{}, Color: Black, Location: NewLocation("B8")},
-		{PieceType: Bishop{}, Color: Black, Location: NewLocation("C8")},
-		{PieceType: Queen{}, Color: Black, Location: NewLocation("D8")},
-		{PieceType: King{}, Color: Black, Location: NewLocation("E8")},
-		{PieceType: Bishop{}, Color: Black, Location: NewLocation("F8")},
-		{PieceType: Knight{}, Color: Black, Location: NewLocation("G8")},
-		{PieceType: Rook{}, Color: Black, Location: NewLocation("H8")},
+		{PieceType: Rook{}, Color: Black, Location: MustParseLocation("A8")},
+		{PieceType: Knight{}, Color: Black, Location: MustParseLocation("B8")},
+		{PieceType: Bishop{}, Color: Black, Location: MustParseLocation("C8")},
+		{PieceType: Queen{}, Color: Black, Location: MustParseLocation("D8")},
+		{PieceType: King{}, Color: Black, Location: MustParseLocation("E8")},
+		{PieceType: Bishop{}, Color: Black, Location: MustParseLocation("F8")},
+		{PieceType: Knight{}, Color: Black, Location: MustParseLocation("G8")},
+		{PieceType: Rook{}, Color: Black, Location: MustParseLocation("H8")},
 	}
 	for i := 0; i < len(pieces); i++ {
 		b.AddPiece(&pieces[i])
