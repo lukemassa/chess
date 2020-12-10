@@ -81,8 +81,8 @@ func (b *Board) IsValidMove(move Move) bool {
 
 // MakeMove make a specific move
 // returns true if this move won the game
-func (b *Board) MakeMove(move *Move) bool {
-	b.FailOnInvalidMove(move)
+func (b *Board) MakeMove(move *Move, c Color) bool {
+	b.FailOnInvalidMove(move, c)
 	b.FailOnInvalidBoard()
 	// If there's a piece there, remove it
 	currentPiece := b.Squares[move.Destination.file][move.Destination.rank]
@@ -179,9 +179,12 @@ func (b *Board) FailOnInvalidBoard() {
 }
 
 // FailOnInvalidMove quit if the move is invalid
-func (b *Board) FailOnInvalidMove(move *Move) {
+func (b *Board) FailOnInvalidMove(move *Move, color Color) {
 	if !b.validate {
 		return
+	}
+	if move.Piece.Color != color {
+		log.Fatalf("Player %s moved piece of color %s", color, move.Piece.Color)
 	}
 	err := b.ValidateMove(move)
 	if err != nil {

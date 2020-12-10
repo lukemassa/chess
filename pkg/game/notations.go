@@ -7,7 +7,7 @@ import (
 
 // Notation a chess
 type Notation interface {
-	ConvertToMove(b *Board, notation string) (*Move, error)
+	ConvertToMove(b *Board, notation string, color Color) (*Move, error)
 }
 
 // AlgebraicNotation for chess, like "NH1"
@@ -20,7 +20,7 @@ type CoordinateNotation struct {
 
 // ConvertToMove convert an coordinate string (like "D2-D3") into a move
 // If poorly formed or not a legal move, return an error
-func (c CoordinateNotation) ConvertToMove(b *Board, notation string) (*Move, error) {
+func (c CoordinateNotation) ConvertToMove(b *Board, notation string, color Color) (*Move, error) {
 
 	coordinates := strings.Split(notation, "-")
 	if len(coordinates) != 2 {
@@ -44,6 +44,9 @@ func (c CoordinateNotation) ConvertToMove(b *Board, notation string) (*Move, err
 	}
 	if !move.IsValidMove(b) {
 		return nil, fmt.Errorf("%s is not a legal move", move)
+	}
+	if move.Piece.Color != color {
+		return nil, fmt.Errorf("%s is not owned by %s", piece, color)
 	}
 	return &move, nil
 }

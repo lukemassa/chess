@@ -52,7 +52,7 @@ func (g *Game) Play() Color {
 		move := player.NextMove(g.Board, color)
 		// Did this move succeed in ending the game?
 
-		if g.Board.MakeMove(move) {
+		if g.Board.MakeMove(move, color) {
 			winner = color
 			break
 		}

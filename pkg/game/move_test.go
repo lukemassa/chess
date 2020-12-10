@@ -51,7 +51,7 @@ func TestMoveBoard(t *testing.T) {
 				Piece:       &piece,
 				Destination: MustParseLocation(tc.newLocationString),
 			}
-			board.MakeMove(&move)
+			board.MakeMove(&move, White)
 
 			err = board.Validate()
 			if err != nil {

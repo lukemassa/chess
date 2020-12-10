@@ -23,7 +23,7 @@ func (i *InteractivePlayer) NextMove(board *game.Board, color game.Color) *game.
 		if moveString == "" {
 			continue
 		}
-		move, err := i.Notation.ConvertToMove(board, moveString)
+		move, err := i.Notation.ConvertToMove(board, moveString, color)
 		if err == nil {
 			return move
 		}
