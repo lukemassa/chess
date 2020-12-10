@@ -16,22 +16,24 @@ func (p Piece) IsValidMove(newLocation Location, b *Board) bool {
 
 	targetPiece := b.Squares[newLocation.file][newLocation.rank]
 
-	// One of our pieces is already there
-	if targetPiece.Color == p.Color {
-		return false
-	}
-
 	// Target square is empty
 	if targetPiece == nil {
 		return p.PieceType.IsValidMove(p.Location, newLocation, p.Color)
 	}
 
+	// It's occupied but by one of our pieces
+	if targetPiece.Color == p.Color {
+		return false
+	}
+	// It's occupied by an opponent piece, can it be taken?
 	return p.PieceType.CanCapture(p.Location, newLocation, p.Color)
 }
 
 // PieceBetween found a piece between two locations
 func (b *Board) PieceBetween(location1, location2 Location) bool {
 
+	// Find if they are on the same rank/file/diagonal
+	// if they are, walk between them and check each square
 	var filedelta int8
 	var rankdelta int8
 
@@ -78,10 +80,13 @@ func (b *Board) PieceBetween(location1, location2 Location) bool {
 	return false
 }
 
+// Walks between location1 and location2 by the deltas
+// No bounds checking is done, so make sure you know the deltas
+// will get you to the other side
 func (b *Board) pieceBetween(location1, location2 Location, filedelta, rankdelta int8) bool {
-	// Walks between location1 and location2 by the deltas
-	rank := location1.rank + rankdelta
+
 	file := location1.file + filedelta
+	rank := location1.rank + rankdelta
 	for rank != location2.rank || file != location2.file {
 
 		if b.Squares[file][rank] != nil {
