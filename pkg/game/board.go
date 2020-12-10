@@ -97,7 +97,6 @@ func (b *Board) MakeMove(move *Move, c Color) bool {
 			}
 		}
 	}
-	fmt.Printf("%v", move.Piece.Location)
 	// Remove the pointer from the old place, add the pointer at the new place
 	b.Squares[move.Piece.Location.file][move.Piece.Location.rank] = nil
 	b.Squares[move.Destination.file][move.Destination.rank] = move.Piece
