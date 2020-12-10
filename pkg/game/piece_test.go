@@ -142,7 +142,7 @@ func TestBasicPieceMovements(t *testing.T) {
 		},
 		{
 			Pawn{},
-			Black,
+			White,
 			"E2",
 			"E6",
 			false,
@@ -250,6 +250,12 @@ func TestPawnCapturingMovement(t *testing.T) {
 			"D3",
 			"D3",
 			true,
+		},
+		{
+			"Can only capture diagonally one ahead",
+			"D5",
+			"D5",
+			false,
 		},
 	}
 

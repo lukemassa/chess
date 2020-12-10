@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestMoveBoard(t *testing.T) {
+func TestCapture(t *testing.T) {
 	testCases := []struct {
 		currentLocationString   string
 		newLocationString       string
